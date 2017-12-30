@@ -15,28 +15,6 @@ yearL = []
 new_list1 = []
 new_list2 = []
 new_yearL = []
-'''
-with open('./samplep.csv', 'rU') as csvfile:
-    mycsv = csv.reader(csvfile)
-    for row in mycsv:
-        coord1 = row[22]
-        coord2 = row[23]
-        year = row[34]
-        month = row[35]
-        if(coord1 != "" and coord2 != "" and year != ""):
-            l1.append(coord1)
-            l2.append(coord2)
-            yearL.append(year)
-
-for item in l1:
-	new_list1.append(float(item))
-
-for item in l2:
-    new_list2.append(float(item))
-
-for item in yearL:
-    new_yearL.append(int(item))
-'''
 
 # Initialize grid of points
 grid_simplex_object = grid_simplex.grid_simplex(100, 100)
