@@ -46,7 +46,6 @@ with open("./data.csv", 'rU') as csvfile:
         with open(file_name, 'w') as f:
             for row in rows:
                 f.write(str(row) + '\n')
-'''
 checker = False
 for key, rows in groupby(csv.reader(open("./data.csv")),
                          lambda row: row[34]):
@@ -136,4 +135,3 @@ zig_zag_homology_object.sort_persistence()
 # Print results
 print "zero_dim_persistence: ", zig_zag_homology_object.zero_dim_persistence
 print "one_dim_persistence: ", zig_zag_homology_object.one_dim_persistence
-'''
