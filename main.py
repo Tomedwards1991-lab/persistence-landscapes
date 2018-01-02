@@ -1,10 +1,12 @@
+# to run python main.py Anser
+# this will give the NBN dataset for geese
+
 import sys
 import math
 import numpy
 import grid_simplex
 import zig_zag_homology
-import csv
-from itertools import groupby
+import csv as c
 import subprocess
 from scipy import stats
 import pyproj
@@ -12,7 +14,6 @@ import matplotlib.pyplot as plt
 import os
 import urllib2
 import zipfile
-from collections import defaultdict
 import pandas as pd
 
 # Anser
@@ -21,7 +22,7 @@ url = "https://records-ws.nbnatlas.org/occurrences/index/download?reasonTypeId=1
 f = urllib2.urlopen(url)
 data = f.read()
 with open("data.zip", "wb") as code:
-    code.write(data)  # nrows=5
+    code.write(data)
 
 path_to_zip_file = "./data.zip"
 path_to_file = "./"
@@ -73,11 +74,11 @@ for i, curFile in enumerate(file_list):
     lng = []
 
     count = 0
-    curMonth = csv.reader(open(curFile, 'rU'))
+    curMonth = c.reader(open(curFile, 'rU'))
     for row in curMonth:
         latitude = row[2]
         longitude = row[3]
-        if (coord1 != "" and coord2 != ""):
+        if (latitude != "" and longitude != ""):
             stringlat.append(latitude)
             stringlng.append(longitude)
             count = count + 1
