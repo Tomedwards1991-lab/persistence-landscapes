@@ -66,41 +66,36 @@ zig_zag_homology_object = zig_zag_homology.zig_zag_homology(grid_simplex_object.
 directoryPath = './toprocess'
 file_list = subprocess.check_output(['find', directoryPath, '-name', '*.csv']).split('\n')[:-1]
 
-l1 = []
-l2 = []
-yearL = []
-new_list1 = []
-new_list2 = []
-new_yearL = []
+for i, curFile in enumerate(file_list):
+    stringlat = []
+    stringlng = []
+    lat = []
+    lng = []
 
-for i, fileCSV in enumerate(file_list):
     count = 0
-    csvfile = open(fileCSV, 'rU')
-    mycsv = csv.reader(csvfile)
-    for row in mycsv:
-        coord1 = row[2]
-        coord2 = row[3]
+    curMonth = csv.reader(open(curFile, 'rU'))
+    for row in curMonth:
+        latitude = row[2]
+        longitude = row[3]
         if (coord1 != "" and coord2 != ""):
-            l1.append(coord1)
-            l2.append(coord2)
+            stringlat.append(latitude)
+            stringlng.append(longitude)
             count = count + 1
-    print count
 
     if (count > 1):
 
-        for item in l1:
-            new_list1.append(float(item))
+        for item in stringlat:
+            lat.append(float(item))
 
-        for item in l2:
-            new_list2.append(float(item))
+        for item in stringlng:
+            lng.append(float(item))
 
         # Define projection for the British National Grid
-        # bng = pyproj.Proj(init='epsg:27700')
+        bng = pyproj.Proj(init='epsg:27700')
 
         # do british projection
-        # bx,by = bng(new_list1,new_list2)
-
-        m1, m2 = new_list1, new_list2
+        bx, by = bng(lat, lng)
+        m1, m2 = bx, by
 
         xmin = min(m1)
         xmax = max(m1)
@@ -109,12 +104,18 @@ for i, fileCSV in enumerate(file_list):
 
         # Apply KDE to the coordiantes and prinyt the results on a grid
         X, Y = numpy.mgrid[xmin:xmax:100j, ymin:ymax:100j]
-
         positions = numpy.vstack([X.ravel(), Y.ravel()])
         values = numpy.vstack([m1, m2])
-        print values
         kernel = stats.gaussian_kde(values, bw_method='silverman')
         kdeOutputArray = numpy.reshape(kernel(positions).T, X.shape)
+
+        fig, ax = plt.subplots()
+        ax.imshow(numpy.rot90(kdeOutputArray), cmap=plt.cm.gist_earth_r, extent=[xmin, xmax, ymin, ymax])
+        ax.plot(m1, m2, 'k.', markersize=2)
+        ax.set_xlim([xmin, xmax])
+        ax.set_ylim([ymin, ymax])
+
+        plt.show()
 
         # Calculate the mean
         summ = 0
