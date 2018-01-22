@@ -34,17 +34,18 @@ csvfile = 'data.csv'
 csv = pd.read_csv(csvfile, sep=',')
 j = 0
 
+
 file = open('processeddata.csv', 'w')
 
-file.write('id,lat,lng,year,month\n')
+file.write('id,lat,lng,year,month,common name\n')
 for i in csv['Year']:
     # if data
     if (numpy.isnan(i) == False and numpy.isnan(csv['Decimal latitude (WGS84)'][j]) == False and numpy.isnan(
-            csv['Decimal latitude (WGS84).1'][j]) == False and numpy.isnan(csv['Month'][j]) == False):
+            csv['Decimal latitude (WGS84).1'][j]) == False and numpy.isnan(csv['Month'][j]) == False and pd.isnull(csv['Common name'][j]) == False):
         # id lat lng year
         file.write(str(csv['Record ID'][j]) + "," + str(csv['Decimal latitude (WGS84)'][j]) + "," + str(
             csv['Decimal latitude (WGS84).1'][j]) + "," + str(int(csv['Year'][j])) + "," + str(
-            int(csv['Month'][j])) + "\n")
+            int(csv['Month'][j]))+ "," + str(csv['Common name'][j]) + "\n")
     else:
         print "Data is missing"
     j = j + 1
@@ -53,97 +54,136 @@ file.close()
 newcsv = 'processeddata.csv'
 df = pd.read_csv(newcsv)
 
-directory = "toprocess"
+directory = "toprocess/common_names"
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-for i, g in df.groupby('month'):
-    g.to_csv('./toprocess/{}.csv'.format(i), header=False, index_label=False)
+directoryM = "toprocess/months"
+if not os.path.exists(directoryM):
+    os.makedirs(directoryM)
+
+for i, g in df.groupby('common name'):
+    g.to_csv('./toprocess/common_names/{}.csv'.format(i), header=True, index_label=False)
+
+    directoryNameByMonth = "toprocess/months/"+i
+    if not os.path.exists( directoryNameByMonth):
+        os.makedirs( directoryNameByMonth)
+
+    directoryPath = './toprocess/common_names'
+    file_list = subprocess.check_output(['find', directoryPath, '-name', '*.csv']).split('\n')[:-1]
+    for m, curFile in enumerate(file_list):
+        namefile = pd.read_csv(curFile)
+        for k, n in namefile.groupby('month'):
+            name = i+str(chr(ord('a') + k - 1))
+            n.to_csv('./toprocess/months/'+i+'/{}.csv'.format(name), header=False, index_label=False)
+            #monthfile = './toprocess/months/{}.csv'.format(k)
+            #open(monthfile,"a").write(i)
 
 # Initialize grid of points
 grid_simplex_object = grid_simplex.grid_simplex(100, 100)
 zig_zag_homology_object = zig_zag_homology.zig_zag_homology(grid_simplex_object.simplices)
 
-directoryPath = './toprocess'
-file_list = subprocess.check_output(['find', directoryPath, '-name', '*.csv']).split('\n')[:-1]
+rootdir = './toprocess/months/'
+zeroDir = 0
+for subdir, dirs, files in os.walk(rootdir):
+    zeroDir = zeroDir + 1
+    if zeroDir > 1:
+        file_list = subprocess.check_output(['find', subdir, '-name', '*.csv']).split('\n')[:-1]
+        for i, curFile in enumerate(file_list):
+            print curFile
+            stringlat = []
+            stringlng = []
+            lat = []
+            lng = []
 
-for i, curFile in enumerate(file_list):
-    stringlat = []
-    stringlng = []
-    lat = []
-    lng = []
+            count = 0
+            curMonth = c.reader(open(curFile, 'rU'))
+            for row in curMonth:
+                latitude = row[2]
+                longitude = row[3]
+                if (latitude != "" and longitude != ""):
+                    stringlat.append(latitude)
+                    stringlng.append(longitude)
+                    count = count + 1
 
-    count = 0
-    curMonth = c.reader(open(curFile, 'rU'))
-    for row in curMonth:
-        latitude = row[2]
-        longitude = row[3]
-        if (latitude != "" and longitude != ""):
-            stringlat.append(latitude)
-            stringlng.append(longitude)
-            count = count + 1
+            if (count > 1):
 
-    if (count > 1):
+                for item in stringlat:
+                    lat.append(float(item))
 
-        for item in stringlat:
-            lat.append(float(item))
+                for item in stringlng:
+                    lng.append(float(item))
 
-        for item in stringlng:
-            lng.append(float(item))
+                # Define projection for the British National Grid
+                bng = pyproj.Proj(init='epsg:27700')
 
-        # Define projection for the British National Grid
-        bng = pyproj.Proj(init='epsg:27700')
+                # do british projection
+                bx, by = bng(lat, lng)
+                m1, m2 = bx, by
 
-        # do british projection
-        bx, by = bng(lat, lng)
-        m1, m2 = bx, by
+                xmin = min(m1)
+                xmax = max(m1)
+                ymin = min(m2)
+                ymax = max(m2)
 
-        xmin = min(m1)
-        xmax = max(m1)
-        ymin = min(m2)
-        ymax = max(m2)
+                # Apply KDE to the coordiantes and prinyt the results on a grid
+                X, Y = numpy.mgrid[xmin:xmax:100j, ymin:ymax:100j]
+                positions = numpy.vstack([X.ravel(), Y.ravel()])
+                values = numpy.vstack([m1, m2])
+                kernel = stats.gaussian_kde(values, bw_method='silverman')
+                kdeOutputArray = numpy.reshape(kernel(positions).T, X.shape)
 
-        # Apply KDE to the coordiantes and prinyt the results on a grid
-        X, Y = numpy.mgrid[xmin:xmax:100j, ymin:ymax:100j]
-        positions = numpy.vstack([X.ravel(), Y.ravel()])
-        values = numpy.vstack([m1, m2])
-        kernel = stats.gaussian_kde(values, bw_method='silverman')
-        kdeOutputArray = numpy.reshape(kernel(positions).T, X.shape)
+                fig, ax = plt.subplots()
+                ax.imshow(numpy.rot90(kdeOutputArray), cmap=plt.cm.gist_earth_r, extent=[xmin, xmax, ymin, ymax])
+                ax.plot(m1, m2, 'k.', markersize=2)
+                ax.set_xlim([xmin, xmax])
+                ax.set_ylim([ymin, ymax])
 
-        fig, ax = plt.subplots()
-        ax.imshow(numpy.rot90(kdeOutputArray), cmap=plt.cm.gist_earth_r, extent=[xmin, xmax, ymin, ymax])
-        ax.plot(m1, m2, 'k.', markersize=2)
-        ax.set_xlim([xmin, xmax])
-        ax.set_ylim([ymin, ymax])
+                #plt.show()
 
+                # Calculate the mean
+                summ = 0
+                countMean = 0
+                for x in range(0, len(kdeOutputArray)):
+                    for y in range(0, len(kdeOutputArray[0])):
+                        summ = summ + kdeOutputArray[x][y]
+                        countMean = countMean + 1
+
+                mean = summ / countMean
+
+                # Turn the points on in the grid
+                a = numpy.zeros((len(kdeOutputArray), len(kdeOutputArray[0])), dtype=int)
+                for x in range(0, len(kdeOutputArray)):
+                    for y in range(0, len(kdeOutputArray[0])):
+                        if kdeOutputArray[x][y] > mean:
+                            a[x][y] = 1
+
+                grid_simplex_object.update_active_simplex(a)
+
+                zig_zag_homology_object.update_simplex_active(grid_simplex_object.simplex_active, i)
+                #grid_simplex_object.plot_active_simplex()
+
+        # When fihished turn off all points in the grid.
+        zig_zag_homology_object.remove_all_simplex()
+        zig_zag_homology_object.sort_persistence()
+
+        '''
+        xCoords = []
+        yCoords = []
+
+        for ind_1, sublist in enumerate(zig_zag_homology_object.zero_dim_persistence):
+            print "ind_1",ind_1
+            for ind_2, ele in enumerate(sublist):
+                print "ind_2",ind_2
+                print "ele",ele
+                if ele != "inf":
+                    xCoords.append(ind_1)
+                    yCoords.append(ind_2)
+        plt.scatter(xCoords,yCoords)
         plt.show()
-
-        # Calculate the mean
-        summ = 0
-        count = 0
-        for x in range(0, len(kdeOutputArray)):
-            for y in range(0, len(kdeOutputArray[0])):
-                summ = summ + kdeOutputArray[x][y]
-                count = count + 1
-
-        mean = summ / count
-
-        # Turn the points on in the grid
-        a = numpy.zeros((len(kdeOutputArray), len(kdeOutputArray[0])), dtype=int)
-        for x in range(0, len(kdeOutputArray)):
-            for y in range(0, len(kdeOutputArray[0])):
-                if kdeOutputArray[x][y] > mean:
-                    a[x][y] = 1
-
-        grid_simplex_object.update_active_simplex(a)
-
-        zig_zag_homology_object.update_simplex_active(grid_simplex_object.simplex_active, i)
-        grid_simplex_object.plot_active_simplex()
-
-# When fihished turn off all points in the grid.
-zig_zag_homology_object.remove_all_simplex()
-zig_zag_homology_object.sort_persistence()
-
-# Print results
-print "zero_dim_persistence: ", zig_zag_homology_object.zero_dim_persistence
-print "one_dim_persistence: ", zig_zag_homology_object.one_dim_persistence
+        '''
+        # Print results
+        fh = open(subdir+ "pdiag.txt","w")
+        fh.write("zero_dim_persistence: " + str(zig_zag_homology_object.zero_dim_persistence))
+        fh.write("one_dim_persistence: " + str(zig_zag_homology_object.one_dim_persistence))
+        fh.close()
