@@ -16,8 +16,9 @@ import os
 import urllib2
 import zipfile
 import pandas as pd
-import glob
 
+
+# from mpl_toolkits.basemap import Basemap
 
 def preruncleanup():
     if os.path.exists('toprocess'):
@@ -127,9 +128,73 @@ def removeDsStore(directory):
         os.remove(directory + "/.DS_Store")
 
 
+def createMap(comName, year, month, lattitude, longitude):
+    rootdir = 'toprocess/'
+    removeDsStore(rootdir)
+    with open(rootdir + "/" + comName + "/" + year + "/map.html", 'w') as myFile:
+        myFile.write("<!DOCTYPE html>")
+        myFile.write("<html>")
+        myFile.write("  <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />")
+        myFile.write("  <title>Map Markers</title>")
+        myFile.write(
+            "  <script src=\"http://maps.google.com/maps/api/js?key=AIzaSyBCHL594XNZtJhgacHTs3Cs96w-TuJEeZQ&sensor=false\"")
+        myFile.write("          type=\"text/javascript\"></script>")
+        myFile.write("  <style>")
+        myFile.write("    html, body {")
+        myFile.write("      height: 100%;")
+        myFile.write("      margin: 0;")
+        myFile.write("      padding: 0;")
+        myFile.write("    }")
+        myFile.write("    #map {")
+        myFile.write("      height: 100%;")
+        myFile.write("    }")
+        myFile.write("  </style>")
+        myFile.write("</head>")
+        myFile.write("<body>")
+        myFile.write("<div id=" + "map" + "></div>")
+        myFile.write("")
+        myFile.write("  <script type=\"text/javascript\">")
+        myFile.write("    var locations = [")
+        for b in range(len(lattitude)):
+            myFile.write("['" + comName + ":" + str(year) + ":" + str(month) + "'," + str(lattitude[b]) + "," + str(
+                longitude[b]) + "],")
+        myFile.write(" ];")
+        myFile.write("")
+        myFile.write("")
+        myFile.write("")
+        myFile.write("    var map = new google.maps.Map(document.getElementById('map'), {")
+        myFile.write("      zoom: 7,")
+        myFile.write("      center: new google.maps.LatLng(51.489475, 0.067588),")
+        myFile.write("      mapTypeId: google.maps.MapTypeId.ROADMAP")
+        myFile.write("    });")
+        myFile.write("")
+        myFile.write("    var infowindow = new google.maps.InfoWindow();")
+        myFile.write("")
+        myFile.write("    var marker, i;")
+        myFile.write("")
+        myFile.write("    for (i = 0; i < locations.length; i++) {  ")
+        myFile.write("      marker = new google.maps.Marker({")
+        myFile.write("        position: new google.maps.LatLng(locations[i][1], locations[i][2]),")
+        myFile.write("        map: map")
+        myFile.write("      });")
+        myFile.write("")
+        myFile.write("      google.maps.event.addListener(marker, 'click', (function(marker, i) {")
+        myFile.write("        return function() {")
+        myFile.write("        infowindow.setContent(locations[i][0]);")
+        myFile.write("          infowindow.open(map, marker);")
+        myFile.write("        }")
+        myFile.write("      })(marker, i));")
+        myFile.write("    }")
+        myFile.write("  </script>")
+        myFile.write("</body>")
+        myFile.write("</html>")
+        myFile.close()
+
+
 def calculatePersistanceDiagrams():
     rootdir = 'toprocess/'
     removeDsStore(rootdir)
+    totalNumberPersistenceObjectsYearsAll = []
     for comNames in os.listdir(rootdir):
         removeDsStore(rootdir + "/" + comNames)
         for years in os.listdir(rootdir + "/" + comNames):
@@ -141,7 +206,7 @@ def calculatePersistanceDiagrams():
             for months in os.listdir(rootdir + "/" + comNames + "/" + years):
                 removeDsStore(rootdir + "/" + comNames + "/" + years + "/" + months)
                 curentfile = rootdir + "/" + comNames + "/" + years + "/" + months
-                print curentfile
+                # print curentfile
                 stringlat = []
                 stringlng = []
                 lat = []
@@ -150,6 +215,7 @@ def calculatePersistanceDiagrams():
                 count = 0
                 curMonth = c.reader(open(curentfile, 'rU'))
                 curMonth.next()
+
                 for row in curMonth:
                     latitude = row[1]
                     longitude = row[2]
@@ -169,7 +235,10 @@ def calculatePersistanceDiagrams():
 
                     # do british projection
                     bx, by = bng(lat, lng)
-                    m1, m2 = bx, by
+                    monthss = months.replace('.csv', '')
+                    createMap(comNames, years, monthss, lat, lng)
+
+                    m1, m2 = lat, lng
 
                     xmin = min(m1)
                     xmax = max(m1)
@@ -197,10 +266,12 @@ def calculatePersistanceDiagrams():
                     zig_zag_homology_object.update_simplex_active(grid_simplex_object.simplex_active, loopPos)
                     loopPos = loopPos + 1
                     # grid_simplex_object.plot_active_simplex()
+
             xCoordsZ = []
             yCoordsZ = []
             xCoordso = []
             yCoordso = []
+            labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 
             for sublistZ in zig_zag_homology_object.zero_dim_persistence:
                 ind_1Z = sublistZ[0]
@@ -212,8 +283,7 @@ def calculatePersistanceDiagrams():
                 xCoordsZ.append(ind_1Z)
                 yCoordsZ.append(ind_2Z)
 
-                plt.scatter(xCoordsZ, yCoordsZ)
-
+                # plt.scatter(xCoordsZ,yCoordsZ)
             for sublisto in zig_zag_homology_object.one_dim_persistence:
                 ind_1o = sublisto[0]
                 if (str(sublisto[1]) == "inf"):
@@ -223,9 +293,21 @@ def calculatePersistanceDiagrams():
 
                 xCoordso.append(ind_1o)
                 yCoordso.append(ind_2o)
+            totalNoObjects = 0
+            totalNoObjects = len(xCoordsZ)
+            total_persistence_objects = []
+            total_persistence_objects = [totalNoObjects]
+            file_persistent_objects = open(rootdir + "/" + comNames + "/" + years + "/persistanceobjects.txt", "w")
+            for item_object in total_persistence_objects:
+                file_persistent_objects.write("%s\n" % item_object)
+            file_persistent_objects.close()
 
             plt.scatter(xCoordsZ, yCoordsZ)
             plt.plot(xCoordso, yCoordso, 'k-', lw=2)
+            plt.title(comNames + "_" + years)
+            plt.axis([0, 12, 0, 12])
+            plt.xlabel('Start time')
+            plt.ylabel('End time')
             # plt.show()
             plt.savefig(rootdir + "/" + comNames + "/" + years + '/scatter.png')
             plt.clf()
@@ -241,8 +323,138 @@ def calculatePersistanceDiagrams():
             zig_zag_homology_object.sort_persistence()
 
 
-# getGenusFromNbn(sys.argv[1])
+def countmonths(directory):
+    numberofmonths = 0
+    for months in os.listdir(directory):
+        if (months.endswith(".csv")):
+            numberofmonths = numberofmonths + 1
 
-splitDataByCommonName()
-splitDataIntoYearAndMonth()
-calculatePersistanceDiagrams()
+    return numberofmonths
+
+
+def noMonthsWithResults():
+    noOfMonths = []
+    yearsList = []
+    noOfMonthsPerYear = []
+    noOfMonthsPerYearAll = []
+    rootdir = 'toprocess/'
+    removeDsStore(rootdir)
+    for comNames in os.listdir(rootdir):
+        removeDsStore(rootdir + "/" + comNames)
+        for years in os.listdir(rootdir + "/" + comNames):
+            locationofcuryear = rootdir + "/" + comNames + "/" + years
+            listMonths = countmonths(locationofcuryear)
+
+            # print "years:", rootdir + "/" +comNames + "/" + years
+            # print "listMonths:",listMonths
+            number_months = listMonths
+            noOfMonths.append(number_months)
+            yearsList.append(years)
+            noOfMonthsPerYear = [comNames, years, number_months]
+            noOfMonthsPerYearAll.append(noOfMonthsPerYear)
+            # print "year:", years
+            # print "No of months:",number_months
+    return noOfMonthsPerYearAll
+
+
+def totalNoOccurences():
+    rootdir = 'toprocess/'
+    removeDsStore(rootdir)
+    totalNumOfRecordsPerYearAll = []
+    for comNames in os.listdir(rootdir):
+        removeDsStore(rootdir + "/" + comNames)
+        for years in os.listdir(rootdir + "/" + comNames):
+            noMonthsperYear = 0
+            recordsWithinYearList = []
+            totalNumOfRecordsPerYear = []
+            removeDsStore(rootdir + "/" + comNames + "/" + years)
+            for months in os.listdir(rootdir + "/" + comNames + "/" + years):
+                if (months.endswith(".csv")):
+                    curentfile = rootdir + "/" + comNames + "/" + years + "/" + months
+                    print curentfile
+                    curMonth = c.reader(open(curentfile, 'rU'))
+                    curMonth.next()
+                    recordsWithinMonth = 0
+                    for row in curMonth:
+                        recordsWithinMonth = recordsWithinMonth + 1
+                        print "count per month intside loop:", recordsWithinMonth
+                    recordsWithinYearList.append(recordsWithinMonth)
+            totalNumOfRecordsPerYear = [sum(recordsWithinYearList)]
+            totalNumOfRecordsPerYearAll.append(totalNumOfRecordsPerYear)
+    return totalNumOfRecordsPerYearAll
+
+
+def avgNoOccurences():
+    rootdir = 'toprocess/'
+    removeDsStore(rootdir)
+    avgNumOfRecordsPerYearAll = []
+    for comNames in os.listdir(rootdir):
+        removeDsStore(rootdir + "/" + comNames)
+        for years in os.listdir(rootdir + "/" + comNames):
+            noMonthsperYear = 0
+            recordsWithinYearList = []
+            avgNumOfRecordsPerYear = []
+            sumRecordsWithinYear = 0
+            avgNumPerYear = 0.0
+            removeDsStore(rootdir + "/" + comNames + "/" + years)
+            for months in os.listdir(rootdir + "/" + comNames + "/" + years):
+                if (months.endswith(".csv")):
+                    curentfile = rootdir + "/" + comNames + "/" + years + "/" + months
+                    curMonth = c.reader(open(curentfile, 'rU'))
+                    curMonth.next()
+                    recordsWithinMonth = 0
+                    for row in curMonth:
+                        recordsWithinMonth = recordsWithinMonth + 1
+                    # print "count per month outside loop:",recordsWithinMonth
+                recordsWithinYearList.append(recordsWithinMonth)
+            noMonthsperYear = len(os.listdir(rootdir + "/" + comNames + "/" + years))
+            sumRecordsWithinYear = sum(recordsWithinYearList)
+            avgNumPerYear = sumRecordsWithinYear / noMonthsperYear
+            avgNumOfRecordsPerYear = [avgNumPerYear]
+            avgNumOfRecordsPerYearAll.append(avgNumOfRecordsPerYear)
+    return avgNumOfRecordsPerYearAll
+
+
+def numberPersisentObjects():
+    rootdir = 'toprocess/'
+    removeDsStore(rootdir)
+    persObjects = []
+    persObjectsList = []
+    for comNames in os.listdir(rootdir):
+        removeDsStore(rootdir + "/" + comNames)
+        for years in os.listdir(rootdir + "/" + comNames):
+            filePersObjects = open(rootdir + "/" + comNames + "/" + years + "/persistanceobjects.txt", "r")
+            for line in filePersObjects:
+                line = line.rstrip()
+                persObjects = [line]
+                persObjectsList.append(persObjects)
+            # os.remove(rootdir + "/" +comNames+"/"+years + "/persistanceobjects.txt")
+    return persObjectsList
+
+
+def calcStatistics():
+    noMonthsperYear = noMonthsWithResults()
+    totalNoPerYear = totalNoOccurences()
+    avgNoOccurencesPerYear = avgNoOccurences()
+    numberPersisentObjectsPerYear = numberPersisentObjects()
+
+    columnNames = ["name_species", "year", "number_months_with_results", "total_number_occurances",
+                   "avg_number_occurances", "total_number_persistence_objects"]
+    for i, element in enumerate(noMonthsperYear):
+        noMonthsperYear[i].extend(totalNoPerYear[i])
+        noMonthsperYear[i].extend(avgNoOccurencesPerYear[i])
+        noMonthsperYear[i].extend(numberPersisentObjectsPerYear[i])
+    noMonthsperYear.insert(0, columnNames)
+
+    statisticsFile = open('statistics.csv', 'w')
+    with statisticsFile:
+        writer = c.writer(statisticsFile)
+        writer.writerows(noMonthsperYear)
+    print("Writing complete")
+
+
+# getGenusFromNbn(sys.argv[1])
+# splitDataByCommonName()
+# splitDataIntoYearAndMonth()
+# calculatePersistanceDiagrams()
+calcStatistics()
