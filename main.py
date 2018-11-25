@@ -450,7 +450,7 @@ def calcStatistics():
     with statisticsFile:
         writer = c.writer(statisticsFile)
         writer.writerows(noMonthsperYear)
-    print("Writing  this is a change complete")
+    print("Writing complete")
 
 
 # getGenusFromNbn(sys.argv[1])
