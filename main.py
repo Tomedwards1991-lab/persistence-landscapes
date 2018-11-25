@@ -457,4 +457,6 @@ def calcStatistics():
 # splitDataByCommonName()
 # splitDataIntoYearAndMonth()
 # calculatePersistanceDiagrams()
+
+
 calcStatistics()
