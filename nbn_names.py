@@ -206,22 +206,23 @@ def update_flickr_top1000():
     other_names = remove(other_names)
 
     for j in range(0,len(common_names)):
+
         common_name = str(common_names[j][1])
         common_name = '"'+common_name+'"'
         common_name = common_name.replace("'","''")
         print common_name
 
         sql = "select count(flickr_data.common_name), flickr_data.common_name from flickr_data group by flickr_data.common_name having flickr_data.common_name = "+common_name+";"
-        print sql
         mycursor.execute(sql)
         flickr_names = mycursor.fetchall()
         flickr_names = str(flickr_names)
         ar = flickr_names.split(",")
-        flickr_counts = str(ar[0]).replace("(","").replace
-
-        print flickr_counts
-        sql_up = "UPDATE nbn_top1000 SET nbn_top1000.flickr_count = "+flickr_counts+" WHERE nbn_top1000.common_name = "+common_name+";"
-        mycursor.execute(sql_up)
+        flickr_counts = str(ar[0]).replace("'[(","").replace("[(","")
+        if len(flickr_counts) > 2:
+            print flickr_counts
+            sql_up = "UPDATE nbn_top1000 SET nbn_top1000.flickr_count = "+flickr_counts+" WHERE nbn_top1000.common_name = "+common_name+";"
+            print sql_up
+            mycursor.execute(sql_up)
 
 
 
