@@ -5,6 +5,8 @@ import json
 import re
 import time
 
+#from typing import List, Any
+
 mydb = mysql.connector.connect(
     host="csmysql.cs.cf.ac.uk",
     user="c1114882",
@@ -84,14 +86,15 @@ def store_top1000():
 
 
 def read_top1000(filename):
-    top1000 = []
+    topNotIn = ["Linnet","Peacock","Jenkins Spire Snail","Common Birds-Foot-Trefoil","Crested Dogs-Tail","Cats-Ear","Dogs Mercury","Cettis Warbler","Swans-neck Thyme-moss","Greater Birds-foot-trefoil","Colts-Foot","Harts-tongue Thyme-moss","Sheeps Sorrel","Devils-Bit Scabious","Enchanters-Nightshade","Daubentons Bat","Birds-claw Beard-moss","Shepherds-Purse","Ladys Bedstraw","Lesser Birds-claw Beard-moss","Nuttalls Water-Weed","Smooth Hawks-Beard","Harts-Tongue","Fools Water-Cress","Swartzs Feather-moss","Sheeps-fescue","Cut-Leaved Cranes-Bill","True Lovers Knot","Perforate St. Johns-Wort","Natterers Bat","Doves-Foot Cranes-Bill","Sheeps Fescue agg.","Square St. Johns Wort","Kneiffs Feather-moss","Blairs Shoulder-Knot","Roesels Bush Cricket","Vines Rustic","Bruchs Pincushion","Travellers Jo"]
+    top1000 = []  # type: List[Any]
     with open(filename) as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in csv_reader:
             if not (row[2] == 'x'):
                 top1000.append(row[0])
-
-    return top1000
+    return topNotIn
+    #return top1000
 
 
 # downloading all the species names - works with a given common name as well
@@ -230,7 +233,7 @@ def update_flickr_top1000():
 def main():
     #insert_top1000_nbn('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top1000_better.csv')
     #update_scientific_names()
-    update_flickr_top1000()
+    #update_flickr_top1000()
 
 
 
@@ -242,7 +245,7 @@ def main():
       writer.writerows(top1000)
     csvFile.close()
     '''
-    '''
+
     top1000 = read_top1000('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top1000_better.csv')
     for item in top1000:
         common_name = item
@@ -274,7 +277,7 @@ def main():
 
             mycursor.execute(
                 "INSERT INTO nbn_classification VALUES(" + uid + "," + common_name + "," + classs + "," + family + "," + genus + "," + kingdom + "," + order_species + ")")
-    '''
+
 
 if __name__ == '__main__':
     main()
