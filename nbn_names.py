@@ -2,7 +2,9 @@ import mysql.connector
 import csv
 import urllib
 import json
-import re
+from unidecode import unidecode
+from collections import defaultdict
+from itertools import chain
 import time
 
 #from typing import List, Any
@@ -86,15 +88,16 @@ def store_top1000():
 
 
 def read_top1000(filename):
-    topNotIn = ["Linnet","Peacock","Jenkins Spire Snail","Common Birds-Foot-Trefoil","Crested Dogs-Tail","Cats-Ear","Dogs Mercury","Cettis Warbler","Swans-neck Thyme-moss","Greater Birds-foot-trefoil","Colts-Foot","Harts-tongue Thyme-moss","Sheeps Sorrel","Devils-Bit Scabious","Enchanters-Nightshade","Daubentons Bat","Birds-claw Beard-moss","Shepherds-Purse","Ladys Bedstraw","Lesser Birds-claw Beard-moss","Nuttalls Water-Weed","Smooth Hawks-Beard","Harts-Tongue","Fools Water-Cress","Swartzs Feather-moss","Sheeps-fescue","Cut-Leaved Cranes-Bill","True Lovers Knot","Perforate St. Johns-Wort","Natterers Bat","Doves-Foot Cranes-Bill","Sheeps Fescue agg.","Square St. Johns Wort","Kneiffs Feather-moss","Blairs Shoulder-Knot","Roesels Bush Cricket","Vines Rustic","Bruchs Pincushion","Travellers Jo"]
-    top1000 = []  # type: List[Any]
+    #topNotIn = ["Linnet","Peacock","Jenkins Spire Snail","Common Birds-Foot-Trefoil","Crested Dogs-Tail","Cats-Ear","Dogs Mercury","Cettis Warbler","Swans-neck Thyme-moss","Greater Birds-foot-trefoil","Colts-Foot","Harts-tongue Thyme-moss","Sheeps Sorrel","Devils-Bit Scabious","Enchanters-Nightshade","Daubentons Bat","Birds-claw Beard-moss","Shepherds-Purse","Ladys Bedstraw","Lesser Birds-claw Beard-moss","Nuttalls Water-Weed","Smooth Hawks-Beard","Harts-Tongue","Fools Water-Cress","Swartzs Feather-moss","Sheeps-fescue","Cut-Leaved Cranes-Bill","True Lovers Knot","Perforate St. Johns-Wort","Natterers Bat","Doves-Foot Cranes-Bill","Sheeps Fescue agg.","Square St. Johns Wort","Kneiffs Feather-moss","Blairs Shoulder-Knot","Roesels Bush Cricket","Vines Rustic","Bruchs Pincushion","Travellers Jo"]
+    top1000 = []
     with open(filename) as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in csv_reader:
             if not (row[2] == 'x'):
                 top1000.append(row[0])
-    return topNotIn
-    #return top1000
+
+    #return topNotIn
+    return top1000
 
 
 # downloading all the species names - works with a given common name as well
@@ -172,7 +175,7 @@ def insert_top1000_nbn(filename):
         for row in reader:
             name = row[0]
             nbn_count = row[1]
-            name = name.replace("'", "")
+
             names.append([name, nbn_count])
 
             mycursor.execute("INSERT INTO nbn_top1000(common_name,nbn_count) VALUES ("+name+","+nbn_count+");")
@@ -181,7 +184,7 @@ def insert_top1000_nbn(filename):
 def update_scientific_names():
     sql = '''      
        UPDATE nbn_top1000
-       INNER JOIN nbn_dictionary ON (nbn_top1000.common_name = nbn_dictionary.comon_name)
+       INNER JOIN nbn_dictionary ON (nbn_top1000.common_name = nbn_dictionary.common_name)
        SET nbn_top1000.uid = nbn_dictionary.uid,
        nbn_top1000.scientific_name = nbn_dictionary.scientific_name
     '''
@@ -189,51 +192,194 @@ def update_scientific_names():
 
 
 def update_flickr_top1000():
-    all_names = []
-    common_names = []
-    scientific_names = []
-    other_names = []
-    flickr_names = []
-    sql = "SELECT * FROM nbn_dictionary"
+    names = []
+    cleaned_names = []
+    sql = "SELECT * FROM nbn_dictionary_list"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     for i in range(0,len(myresult)):
-        common_names.append([myresult[i][0],myresult[i][1]])
-        scientific_names.append([myresult[i][0],myresult[i][2]])
-        other_names.append([myresult[i][0],myresult[i][3]])
+        names.append(myresult[i])
 
 
+    for n in names:
+        uid = unidecode(n[0])
 
-    common_names = remove(common_names)
-    scientific_names = remove(scientific_names)
-    other_names = remove(other_names)
+        list_names = n[1]
+        list_names_array = list_names.split(",")
+        for l in list_names_array:
+            l = str(l).replace("[","").replace("]","")
+            cleaned_names.append([uid, l])
 
-    for j in range(0,len(common_names)):
-
-        common_name = str(common_names[j][1])
-        common_name = '"'+common_name+'"'
-        common_name = common_name.replace("'","''")
-        print common_name
-
-        sql = "select count(flickr_data.common_name), flickr_data.common_name from flickr_data group by flickr_data.common_name having flickr_data.common_name = "+common_name+";"
+    cleaned_names = remove(cleaned_names)
+    for name in cleaned_names:
+        uid = name[0]
+        str_name = ""
+        if str(name[1]).startswith(" u"):
+            str_name = str(name[1])[2:]
+        elif str(name[1]).startswith("u"):
+            str_name = str(name[1])[2:]
+        else:
+            str_name = str(name[1])
+        #print name[0],str_name
+        str_name = str_name.replace("'","").replace('"','')
+        sql = "select count(flickr_data.common_name), flickr_data.common_name from flickr_data group by flickr_data.common_name having flickr_data.common_name = '"+str_name+"';"
+        print sql
         mycursor.execute(sql)
         flickr_names = mycursor.fetchall()
-        flickr_names = str(flickr_names)
-        ar = flickr_names.split(",")
-        flickr_counts = str(ar[0]).replace("'[(","").replace("[(","")
-        if len(flickr_counts) > 2:
+        if mycursor.rowcount != 0:
+            print flickr_names
+            flickr_names = str(flickr_names)
+            print flickr_names
+            ar = flickr_names.split(",")
+            name = str(ar[1]).replace("')]","").replace(")]","")
+            flickr_counts = str(ar[0]).replace("'[(","").replace("[(","")
+
+            print name
             print flickr_counts
-            sql_up = "UPDATE nbn_top1000 SET nbn_top1000.flickr_count = "+flickr_counts+" WHERE nbn_top1000.common_name = "+common_name+";"
+            sql_up = "UPDATE nbn_top1000 SET nbn_top1000.flickr_count = "+flickr_counts+" WHERE nbn_top1000.uid = '"+uid+"';"
             print sql_up
             mycursor.execute(sql_up)
 
 
 
+def unique(list1):
+    unique_list = []
+
+    for x in list1:
+        if x not in unique_list:
+            unique_list.append(x)
+    return unique_list
+
+def populate_dictList():
+    dd = defaultdict(list)
+    dictNames = dict()
+    names = []
+    sc_names = {}
+    sql = "SELECT * FROM nbn_dictionary"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    for i in range(0, len(myresult)):
+        term_id = myresult[i][0]
+        common_name = myresult[i][1]
+        if common_name == "Blair's Shoulder-Knot":
+            common_name = 'Blair''s Shoulder-Knot'
+        if common_name == "Hart's-Tongue":
+            common_name = 'Hart''s-Tongue'
+        if common_name == "Smooth Hawk's-Beard":
+            common_name = 'Smooth Hawk''s-Beard'
+        if common_name == "Dog's Mercury":
+            common_name = 'Dog''s Mercury'
+        if common_name == "Fool's Water-Cress":
+            common_name = 'Fool''s Water-Cress'
+        if common_name == "Greater Bird's-foot-trefoil":
+            common_name = 'Greater Bird''s-foot-trefoil'
+        if common_name == "Perforate St. John's-Wort":
+            common_name = 'Perforate St. John''s-Wort'
+        if common_name == "Daubenton's Bat":
+            common_name = 'Daubenton''s Bat'
+        if common_name == "Lady's Bedstraw":
+            common_name = 'Lady''s Bedstraw'
+        if common_name == "Hart's-Tongue":
+            common_name = 'Hart''s-Tongue'
+        if common_name == "Cat's-Ear":
+            common_name = 'Cat''s-Ear'
+        if common_name == "Nuttall's Water-Weed":
+            common_name = 'Nuttall''s Water-Weed'
+        if common_name == "Sheep's Sorrel":
+            common_name = 'Sheep''s Sorrel'
+        if common_name == "Shepherd's-Purse":
+            common_name = 'Shepherd''s-Purse'
+        if common_name == "Sheep's-fescue":
+            common_name = 'Sheep''s-fescue'
+        if common_name == "Kneiff's Feather-moss":
+            common_name = 'Kneiff''s Feather-moss'
+        if common_name == "Cut-Leaved Crane's-Bill":
+            common_name = 'Cut-Leaved Crane''s-Bill'
+        if common_name == "Hart's-tongue Thyme-moss":
+            common_name = 'Hart''s-tongue Thyme-moss'
+        if common_name == "Devil's-Bit Scabious":
+            common_name = 'Devil''s-Bit Scabious'
+        if common_name == "Colt's-Foot":
+            common_name = 'Colt''s-Foot'
+        if common_name == "True Lover's Knot":
+            common_name = 'True Lover''s Knot'
+        if common_name == "Roesel's Bush Cricket":
+            common_name = 'Roesel''s Bush Cricket'
+        if common_name == "Crested Dog's-Tail":
+            common_name = 'Crested Dog''s-Tail'
+        if common_name == "Swartz's Feather-moss":
+            common_name = 'Swartz''s Feather-moss'
+        if common_name == "Traveller's Joy":
+            common_name = 'Traveller''s Joy'
+        if common_name == "Sheep's Fescue agg.":
+            common_name = 'Sheep''s Fescue agg.'
+        if common_name == "Natterer's Bat":
+            common_name = 'Natterer''s Bat'
+        if common_name == "Lesser Bird's-claw Beard-moss":
+            common_name = 'Lesser Bird''s-claw Beard-moss'
+        if common_name == "Bird's-claw Beard-moss":
+            common_name = 'Bird''s-claw Beard-moss'
+        if common_name == "Cetti's Warbler":
+            common_name = 'Cetti''s Warbler'
+        if common_name == "Enchanter's-Nightshade":
+            common_name = 'Enchanter''s-Nightshade'
+        if common_name == "Swan's-neck Thyme-moss":
+            common_name = 'Swan''s-neck Thyme-moss'
+        if common_name == "Bruch's Pincushion":
+            common_name = 'Bruch''s Pincushion'
+        if common_name == "Dove's-Foot Crane's-Bill":
+            common_name = 'Dove''s-Foot Crane''s-Bill'
+        if common_name == "Jenkins' Spire Snail":
+            common_name = 'Jenkins'' Spire Snail'
+        if common_name == "Common Bird's-Foot-Trefoil":
+            common_name = 'Common Bird''s-Foot-Trefoil'
+        if common_name == "Vine's Rustic":
+            common_name = 'Vine''s Rustic'
+        if common_name == "Square St. John's Wort":
+            common_name = 'Square St. John''s Wort'
+
+        scientific_name = myresult[i][2]
+        scientific_name = scientific_name.replace('"', '')
+        other_names = myresult[i][3]
+        other_names = other_names.replace('"', '')
+
+        names.append([term_id,other_names])
+        sc_names[term_id] = [common_name,scientific_name]
+
+
+
+
+    for line in names:
+        if line[0] in dictNames:
+            # append the new number to the existing array at this slot
+            dictNames[line[0]].append(line[1])
+        else:
+            # create a new array in this slot
+            dictNames[line[0]] = [line[1]]
+
+    for d in (sc_names, dictNames):  # you can list as many input dicts as you want here
+        for key, value in d.iteritems():
+            dd[key].append(value)
+
+    print len(dd)
+    for item in dd:
+        list_dd = list(chain.from_iterable(list(dd[item])))
+        item = '"'+str(item)+'"'
+        str_list = '"'+str(list_dd)+'"'
+        sql = "INSERT INTO nbn_dictionary_list(uid,names_list) VALUES (" + item + "," + str_list + ");"
+        print sql
+        mycursor.execute("INSERT INTO nbn_dictionary_list(uid,names_list) VALUES (" + item + "," + str_list + ");")
+
+
+
+
 
 def main():
+    #populate_dictList()
     #insert_top1000_nbn('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top1000_better.csv')
     #update_scientific_names()
-    #update_flickr_top1000()
+    update_flickr_top1000()
+    #update_scientific_names()
 
 
 
@@ -244,7 +390,7 @@ def main():
       writer = csv.writer(csvFile)
       writer.writerows(top1000)
     csvFile.close()
-    '''
+    
 
     top1000 = read_top1000('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top1000_better.csv')
     for item in top1000:
@@ -277,7 +423,7 @@ def main():
 
             mycursor.execute(
                 "INSERT INTO nbn_classification VALUES(" + uid + "," + common_name + "," + classs + "," + family + "," + genus + "," + kingdom + "," + order_species + ")")
-
+        '''
 
 if __name__ == '__main__':
     main()
