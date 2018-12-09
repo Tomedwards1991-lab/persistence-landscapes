@@ -8,6 +8,14 @@ import mysql.connector
 from google.cloud import vision
 from google.cloud.vision import types
 
+def unique(list1):
+    unique_list = []
+
+    for x in list1:
+        if x not in unique_list:
+            unique_list.append(x)
+    return unique_list
+
 # Instantiates a client
 client = vision.ImageAnnotatorClient()
 
@@ -19,31 +27,44 @@ mydb = mysql.connector.connect(
 )
 
 mycursor = mydb.cursor()
+mydb.autocommit = True
 
 sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
                 "FROM nbn_top1000 n_top,nbn_dictionary_list n_dict " \
                 "WHERE flickr_count != 0 " \
                 "and flickr_exists IS NULL " \
-                "and n_top.uid = n_dict.uid; " \
+                "and n_top.uid = n_dict.uid " \
+                "and n_top.uid = 'NHMSYS0000875576'; " \
+
 
 mycursor.execute(sql_getFnames)
 flickr_names = mycursor.fetchall()
 for name in flickr_names:
+    all_names_list = []
     uid = name[0]
-    names_list = name[1]
+    all_names = str(name[1])
+    all_names = all_names.replace("[","").replace("]","")
+    all_names_array = all_names.split(",")
+    for i in all_names_array:
+        i = i.replace('u','',1)
+        i = i[1:-1]
+        i = i.replace("'","",1)
+        i = i.lower()
+        all_names_list.append(i)
+
+
+    all_names_list = unique(all_names_list)
     common_name = name[2]
-    common_name = common_name.replace("'s","\'s")
-    print common_name
-    print names_list
+    common_name = common_name.replace("'s","''s")
     sql = ''
+
 
     sql = "SELECT id, common_name FROM `flickr_data` where common_name = '"+common_name+"';"
 
-    print "sql getting names: ",sql
+    #print "sql getting names: ",sql
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
 
-    '''
     for x in myresult:
         speciesname = x[1]
         photoid = x[0]
@@ -51,8 +72,9 @@ for name in flickr_names:
         try:
 
             print "species name: ",speciesname
-            print "photoid: ",photoid
+
             time.sleep(1)
+
 
             
             file = "Flickr_Images/" + speciesname + "/" + str(photoid) + ".jpg"
@@ -77,9 +99,17 @@ for name in flickr_names:
                 urllib.urlretrieve(download, directory + "/" + photoid + ".jpg")
                 file_path = directory + "/" + photoid + ".jpg"
 
+
                 # The name of the image file to annotate
                 file_name = os.path.join(
                     os.path.dirname(__file__),file_path)
+
+
+                print "--------For the image table--------"
+                print "photoid: ", photoid
+                print "uid: ", uid
+                print "all_names: ", all_names_list
+                mycursor.execute('INSERT IGNORE INTO image_names VALUES ("'+str(photoid)+'","'+str(uid)+'","'+str(all_names_list)+'",'+'"nothing","nothing");')
 
                 # Loads the image into memory
                 with io.open(file_name, 'rb') as image_file:
@@ -91,14 +121,17 @@ for name in flickr_names:
                 response = client.label_detection(image=image)
                 labels = response.label_annotations
 
+
                 print('Labels:')
                 for label in labels:
-                    print(label.description)
+                    label_description = str(label.description).lower()
+                    print "-------------VALUES FOR Google-scores------------"
+                    print(photoid)
+                    print(label_description)
                     print(label.score)
-            
-        
+                    mycursor.execute("INSERT INTO google_scores VALUES ('" + str(photoid) + "','" + label_description + "','" + str(label.score) + "');")
+
         except KeyError:
             continue
         except ValueError:
             continue
-    '''
