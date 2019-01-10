@@ -6,6 +6,7 @@ from unidecode import unidecode
 from collections import defaultdict
 from itertools import chain
 import time
+import re
 
 #from typing import List, Any
 
@@ -62,7 +63,7 @@ def remove(duplicate):
 
 def get_top1000():
     # url for gettnig the top 1000 species on NBN
-    url_topspecies_names = "https://records-ws.nbnatlas.org/occurrence/facets?facets=common_name&q=data_resource_uid:*&flimit=1500&lat=53.371107&lon=-1.560963&radius=200.0"
+    url_topspecies_names = "https://records-ws.nbnatlas.org/occurrence/facets?facets=common_name&q=data_resource_uid:*&flimit=2000&lat=53.371107&lon=-1.560963&radius=200.0"
     f = urllib.urlopen(url_topspecies_names)
     data = json.loads(f.read())
     print type(data)
@@ -73,7 +74,7 @@ def get_top1000():
 # for having the top 1000 species from nbn
 def store_top1000():
     top1000 = []
-    counts = open('/Users/thomasedwards/Desktop/nbn_friday/newtop1500.txt', 'r')
+    counts = open('/Users/thomasedwards/Desktop/nbn_friday/top2000.txt', 'r')
     data = counts.read()
     data_str = str(data)
     data_str = data_str.replace('[{"fieldName":"common_name","fieldResult":[{', '').replace(',"count":11702}]', '')
@@ -93,8 +94,8 @@ def read_top1000(filename):
     with open(filename) as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in csv_reader:
-            if not (row[2] == 'x'):
-                top1000.append(row[0])
+            #if not (row[2] == 'x'):
+            top1000.append(row[0])
 
     #return topNotIn
     return top1000
@@ -128,8 +129,17 @@ def get_allnames(common_name):
     cleantext = removeNonAscii(cleantext)
     common_name = common_name.replace("'", "''")
     classification_class = data["classification"]["class"]
-    classification_family = data["classification"]["family"]
-    classification_genus = data["classification"]["genus"]
+
+    if common_name == "Copse Snail":
+        classification_family = "none"
+    else:
+        classification_family = data["classification"]["family"]
+
+    if common_name == "Common Bream x Roach":
+        classification_genus = "none"
+    else:
+        classification_genus = data["classification"]["genus"]
+
     classification_kingdom = data["classification"]["kingdom"]
 
     classification_class = classification_class.encode('ascii', 'ignore')
@@ -236,7 +246,7 @@ def update_flickr_top1000():
 
             print name
             print flickr_counts
-            sql_up = "UPDATE nbn_top1000 SET nbn_top1000.flickr_count = "+flickr_counts+" WHERE nbn_top1000.uid = '"+uid+"';"
+            sql_up = "UPDATE nbn_top1000 SET nbn_top1000.flickr_count = "+flickr_counts+" WHERE nbn_top1000.uid = '"+uid+"' and flickr_count IS NULL;"
             print sql_up
             mycursor.execute(sql_up)
 
@@ -251,102 +261,141 @@ def unique(list1):
     return unique_list
 
 def populate_dictList():
+    names_new = []
+    top1000 = read_top1000('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top2000.csv')
+    for item in top1000:
+        common = item
+        common = common.replace('"', '')
+        names_new.append(common)
+
+    print names_new
+    names_str = str(names_new).replace("[","").replace("]","")
     dd = defaultdict(list)
     dictNames = dict()
     names = []
     sc_names = {}
-    sql = "SELECT * FROM nbn_dictionary"
+    sql = "SELECT * FROM nbn_dictionary where common_name in ( "+names_str+");"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     for i in range(0, len(myresult)):
         term_id = myresult[i][0]
+        print term_id
+
         common_name = myresult[i][1]
-        if common_name == "Blair's Shoulder-Knot":
-            common_name = 'Blair''s Shoulder-Knot'
-        if common_name == "Hart's-Tongue":
-            common_name = 'Hart''s-Tongue'
-        if common_name == "Smooth Hawk's-Beard":
-            common_name = 'Smooth Hawk''s-Beard'
-        if common_name == "Dog's Mercury":
-            common_name = 'Dog''s Mercury'
-        if common_name == "Fool's Water-Cress":
-            common_name = 'Fool''s Water-Cress'
-        if common_name == "Greater Bird's-foot-trefoil":
-            common_name = 'Greater Bird''s-foot-trefoil'
-        if common_name == "Perforate St. John's-Wort":
-            common_name = 'Perforate St. John''s-Wort'
-        if common_name == "Daubenton's Bat":
-            common_name = 'Daubenton''s Bat'
-        if common_name == "Lady's Bedstraw":
-            common_name = 'Lady''s Bedstraw'
-        if common_name == "Hart's-Tongue":
-            common_name = 'Hart''s-Tongue'
-        if common_name == "Cat's-Ear":
-            common_name = 'Cat''s-Ear'
-        if common_name == "Nuttall's Water-Weed":
-            common_name = 'Nuttall''s Water-Weed'
-        if common_name == "Sheep's Sorrel":
-            common_name = 'Sheep''s Sorrel'
-        if common_name == "Shepherd's-Purse":
-            common_name = 'Shepherd''s-Purse'
-        if common_name == "Sheep's-fescue":
-            common_name = 'Sheep''s-fescue'
+        print common_name
+
+        if common_name == "Hedgerow Crane's-Bill":
+            common_name = 'Hedgerow Crane''s-Bill'
+        if common_name == "Dog's Tooth":
+            common_name = 'Dog''s Tooth'
+        if common_name == "Dead Man's Fingers":
+            common_name = 'Dead Man''s Fingers'
+        if common_name == "Imperforate St John's-wort":
+            common_name = 'Imperforate St John''s-wort'
+        if common_name == "Adonis' Ladybird":
+            common_name = 'Adonis'' Ladybird'
+        if common_name == "Adonis' Ladybird":
+            common_name = 'Adonis'' Ladybird'
+        if common_name == "Shining Crane's-Bill":
+            common_name = 'Shining Crane''s-Bill'
+        if common_name == "Small-Flowered Crane's-Bill":
+            common_name = 'Small-Flowered Crane''s-Bill'
+        if common_name == "Crab's Eye Lichen":
+            common_name = 'Crab''s Eye Lichen'
         if common_name == "Kneiff's Feather-moss":
             common_name = 'Kneiff''s Feather-moss'
-        if common_name == "Cut-Leaved Crane's-Bill":
-            common_name = 'Cut-Leaved Crane''s-Bill'
-        if common_name == "Hart's-tongue Thyme-moss":
-            common_name = 'Hart''s-tongue Thyme-moss'
-        if common_name == "Devil's-Bit Scabious":
-            common_name = 'Devil''s-Bit Scabious'
-        if common_name == "Colt's-Foot":
-            common_name = 'Colt''s-Foot'
-        if common_name == "True Lover's Knot":
-            common_name = 'True Lover''s Knot'
-        if common_name == "Roesel's Bush Cricket":
-            common_name = 'Roesel''s Bush Cricket'
-        if common_name == "Crested Dog's-Tail":
-            common_name = 'Crested Dog''s-Tail'
-        if common_name == "Swartz's Feather-moss":
-            common_name = 'Swartz''s Feather-moss'
-        if common_name == "Traveller's Joy":
-            common_name = 'Traveller''s Joy'
-        if common_name == "Sheep's Fescue agg.":
-            common_name = 'Sheep''s Fescue agg.'
-        if common_name == "Natterer's Bat":
-            common_name = 'Natterer''s Bat'
-        if common_name == "Lesser Bird's-claw Beard-moss":
-            common_name = 'Lesser Bird''s-claw Beard-moss'
-        if common_name == "Bird's-claw Beard-moss":
-            common_name = 'Bird''s-claw Beard-moss'
-        if common_name == "Cetti's Warbler":
-            common_name = 'Cetti''s Warbler'
-        if common_name == "Enchanter's-Nightshade":
-            common_name = 'Enchanter''s-Nightshade'
-        if common_name == "Swan's-neck Thyme-moss":
-            common_name = 'Swan''s-neck Thyme-moss'
+        if common_name == "Hare's-Foot Clover":
+            common_name = 'Hare''s-Foot Clover'
+        if common_name == "Trailing St. John's-Wort":
+            common_name = 'Trailing St. John''s-Wort'
+        if common_name == "Slender St. John's-Wort":
+            common_name = 'Slender St. John''s-Wort'
+        if common_name == "Hairy St. John's-Wort":
+            common_name = 'Hairy St. John''s-Wort'
+        if common_name == "Adder's Tongue":
+            common_name = 'Adder''s Tongue'
+        if common_name == "Fool's Parsley":
+            common_name = 'Fool''s Parsley'
+        if common_name == "Lawyer's Wig":
+            common_name = 'Lawyer''s Wig'
+        if common_name == "Bird's-Foot":
+            common_name = 'Bird''s-Foot'
+        if common_name == "Intermediate Lady's-mantle":
+            common_name = 'Intermediate Lady''s-mantle'
+        if common_name == "Beaked Hawk's-Beard":
+            common_name = 'Beaked Hawk''s-Beard'
+        if common_name == "Marsh Hawk's-Beard":
+            common_name = 'Marsh Hawk''s-Beard'
+        if common_name == "Buck's-Horn Plantain":
+            common_name = 'Buck''s-Horn Plantain'
+        if common_name == "Archer's Dart":
+            common_name = 'Archer''s Dart'
+        if common_name == "Bird's Wing":
+            common_name = 'Bird''s Wing'
+        if common_name == "King Alfred's Cakes":
+            common_name = 'King Alfred''s Cakes'
+        if common_name == "Hare's-Tail Cottongrass":
+            common_name = 'Hare''s-Tail Cottongrass'
+        if common_name == "Lesser Swine's Cress":
+            common_name = 'Lesser Swine''s Cress'
         if common_name == "Bruch's Pincushion":
             common_name = 'Bruch''s Pincushion'
-        if common_name == "Dove's-Foot Crane's-Bill":
-            common_name = 'Dove''s-Foot Crane''s-Bill'
-        if common_name == "Jenkins' Spire Snail":
-            common_name = 'Jenkins'' Spire Snail'
-        if common_name == "Common Bird's-Foot-Trefoil":
-            common_name = 'Common Bird''s-Foot-Trefoil'
-        if common_name == "Vine's Rustic":
-            common_name = 'Vine''s Rustic'
-        if common_name == "Square St. John's Wort":
-            common_name = 'Square St. John''s Wort'
+        if common_name == "Lyell's Bristle-moss":
+            common_name = 'Lyell''s Bristle-moss'
+        if common_name == "Smaller Cat's-Tail":
+            common_name = 'Smaller Cat''s-Tail'
+        if common_name == "Maiden's Blush":
+            common_name = 'Maiden''s Blush'
+        if common_name == "Dyer's Greenweed":
+            common_name = 'Dyer''s Greenweed'
+        if common_name == "Bewick's Swan":
+            common_name = 'Bewick''s Swan'
+        if common_name == "Dead men's fingers":
+            common_name = 'Dead men''s fingers'
+        if common_name == "Svensson's Copper Underwing":
+            common_name = 'Svensson''s Copper Underwing'
+        if common_name == "Dame's Violet":
+            common_name = 'Dame''s Violet'
+        if common_name == "Swine's Cress":
+            common_name = 'Swine''s Cress'
+        if common_name == "Meadow Crane's-Bill":
+            common_name = 'Meadow Crane''s-Bill'
+        if common_name == "Bourguignat's Slug":
+            common_name = 'Bourguignat''s Slug'
+        if common_name == "Sheep's-Bit":
+            common_name = 'Sheep''s-Bit'
+        if common_name == "Pfeiffer's Amber Snail":
+            common_name = 'Pfeiffer''s Amber Snail'
+        if common_name == "Ploughman's-Spikenard":
+            common_name = 'Ploughman''s-Spikenard'
+        if common_name == "Smooth Lady's-mantle":
+            common_name = 'Smooth Lady''s-mantle'
+        if common_name == "Whiskered/Brandt's Bat":
+            common_name = 'Whiskered/Brandt''s Bat'
+        if common_name == "Dryad's Saddle":
+            common_name = 'Dryad''s Saddle'
+        if common_name == "Witches' Butter":
+            common_name = 'Witches'' Butter'
+        if common_name == "Schreber's Forklet-moss":
+            common_name = 'Schreber''s Forklet-moss'
+        if common_name == "Kneiff's Hook-moss":
+            common_name = 'Kneiff''s Hook-moss'
+        if common_name == "Hornschuch's Beard-moss":
+            common_name = 'Hornschuch''s Beard-moss'
+        if common_name == "Common Stork's-Bill":
+            common_name = 'Common Stork''s-Bill'
+        if common_name == "Mueller's Pouchwort":
+            common_name = 'Mueller''s Pouchwort'
 
         scientific_name = myresult[i][2]
         scientific_name = scientific_name.replace('"', '')
+        print scientific_name
         other_names = myresult[i][3]
         other_names = other_names.replace('"', '')
+        print other_names
 
         names.append([term_id,other_names])
         sc_names[term_id] = [common_name,scientific_name]
-
-
 
 
     for line in names:
@@ -366,33 +415,34 @@ def populate_dictList():
         list_dd = list(chain.from_iterable(list(dd[item])))
         item = '"'+str(item)+'"'
         str_list = '"'+str(list_dd)+'"'
-        sql = "INSERT INTO nbn_dictionary_list(uid,names_list) VALUES (" + item + "," + str_list + ");"
+        sql = "INSERT IGNORE INTO nbn_dictionary_list(uid,names_list) VALUES (" + item + "," + str_list + ");"
         print sql
-        mycursor.execute("INSERT INTO nbn_dictionary_list(uid,names_list) VALUES (" + item + "," + str_list + ");")
-
+        mycursor.execute("INSERT IGNORE INTO nbn_dictionary_list(uid,names_list) VALUES (" + item + "," + str_list + ");")
 
 
 
 
 def main():
+
     #populate_dictList()
-    #insert_top1000_nbn('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top1000_better.csv')
+    #insert_top1000_nbn('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top2000.csv')
     #update_scientific_names()
     update_flickr_top1000()
-    #update_scientific_names()
 
 
 
 
-    '''
-    top1000 = store_top1000()
-    with open('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top1500.csv', 'w') as csvFile:
-      writer = csv.writer(csvFile)
-      writer.writerows(top1000)
-    csvFile.close()
+
+
+    #top1000 = store_top1000()
+    #with open('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top2000.csv', 'w') as csvFile:
+      #writer = csv.writer(csvFile)
+      #writer.writerows(top1000)
+    #csvFile.close()
+
     
-
-    top1000 = read_top1000('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top1000_better.csv')
+    '''
+    top1000 = read_top1000('/Users/thomasedwards/Desktop/nbn_friday/species_nbn_top2000.csv')
     for item in top1000:
         common_name = item
         common_name = common_name.replace('"', '')

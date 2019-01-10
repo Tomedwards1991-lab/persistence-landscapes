@@ -41,6 +41,5 @@ for i in result:
         mycursor.execute("UPDATE image_names SET verify = 'match', column2 = '"+label+"' WHERE image_id = '"+image_id+"';")
     else:
         print "no match"
-        mycursor.execute(
-            "UPDATE image_names SET verify = 'no match'")
+        mycursor.execute("UPDATE image_names SET verify = 'no match'")
 

@@ -1,4 +1,4 @@
-import mappingClasses1
+import mappingClasses
 import numpy as np
 import math
 import os
@@ -7,17 +7,18 @@ import csv
 import collections
 from dbConnection import *
 
-
-gridmap = mappingClasses1.gridFunctions()
-mathcomp = mappingClasses1.mathComparisons()
-
-gridLonArray, gridLatArray, lowLat, rowNum = gridmap.createGrid(gridmap.columnNum, gridmap.lowLat, gridmap.highLat,gridmap.leftLon, gridmap.rightLon)
+gridmap = mappingClasses.gridFunctions()
+mathcomp = mappingClasses.mathComparisons()
 
 # speciesArray = ['Black-Headed Gull','Bullfinch','Long-Tailed Tit','Coal Tit', 'Sparrowhawk','Moorhen','Goldfinch']
 speciesArray = ['Adder']
+gridLonArray, gridLatArray, lowLat, rowNum = gridmap.createGrid(gridmap.columnNum, gridmap.lowLat, gridmap.highLat,
+                                                                gridmap.leftLon, gridmap.rightLon)
+
 '''
+speciesArray = []
 namesNBNcount = collections.Counter()
-csvNBNfile = 'nbn_data_unique_1.csv'
+csvNBNfile = 'nbn_data_unique.csv'
 with open(csvNBNfile, 'r') as csvNBN:
 	for row in csv.reader(csvNBN):
 		if row[0] != "Burdock":
@@ -25,7 +26,7 @@ with open(csvNBNfile, 'r') as csvNBN:
 
 
 namesFlickrcount = collections.Counter()
-csvFlickrfile = 'flickr_data_unique_1.csv'
+csvFlickrfile = 'flickr_data_unique.csv'
 with open(csvFlickrfile, 'r') as csvFlickr:
 	for row in csv.reader(csvFlickr):
 		if row[0] != "Burdock":
@@ -35,9 +36,15 @@ for key, value in namesNBNcount.items():
 	for keyF, valueF in namesFlickrcount.items():
 		if key == keyF and value > 100 and valueF > 100:
 			speciesArray.append(key)
-'''
-# Loop through each species in the array
 
+
+
+select di.common_name, nd.id, nd.latitude, nd.longitude, nd.year, nd.month
+from dictionary di, nbn_data nd
+where di.other_names = nd.common_name
+'''
+
+# Loop through each species in the array
 for j in range(0, len(speciesArray)):
 
     species = speciesArray[j]
@@ -45,14 +52,11 @@ for j in range(0, len(speciesArray)):
 
     totalCSVCount = gridmap.getCSVCount(cursor)
     totalSQLCount = gridmap.getSQLCount(cursor)
-    flickrCountArray = []
-    nbnCountArray = []
-    print "nbn,flickr total counts: ", totalCSVCount, totalSQLCount
-
+    sqlCountArray = []
+    csvCountArray = []
+    writeComparisons = []
+    keysList = []
     # loop through the cells getting the counts for SQL and CSV and normalising the data ot be sotred in a probability distributions for similarity calculations
-    # loop through the cells getting the counts for SQL and CSV and normalising the data ot be sotred in a probability distributions for similarity calculations
-    # i is squareID
-    count = 0
     for i in range(0, (rowNum * gridmap.columnNum) - 1):
 
         # avoid all cells that are no in the UK
@@ -70,59 +74,43 @@ for j in range(0, len(speciesArray)):
                 or (i == 680) or (i >= 685 and i <= 689) or (i >= 648 and i <= 649) or (i == 503) or (i == 543) or (
                         i == 583)):
             i = i
-            count = count + 1
-
 
         else:
-
+            keysList.append(i)
+            # print i
             getCellLon, getCellLat = gridmap.getCellByID(gridLatArray, gridLonArray, i, rowNum)
-            print "getCellLon", getCellLon
-            print "getCellLat", getCellLat
+            print "getCellLon: ", getCellLon
+            print "getCellLat: ", getCellLat
+            sqlCellCount = gridmap.getCellPhotoCountSQL(getCellLon, getCellLat,cursor)
+            csvCellCount = gridmap.getCellPhotoCountCSV(getCellLon, getCellLat,cursor)
 
-            flickrCellCount = gridmap.getCellPhotoCountSQL(getCellLon, getCellLat,cursor)
-            nbnCellCount = gridmap.getCellPhotoCountCSV(getCellLon, getCellLat,cursor)
+            sqlCellCount = (int(sqlCellCount) / float(totalSQLCount)) * 100
+            sqlCellCount = round(sqlCellCount * 2) / 2
 
-            flickrCellCount = (int(flickrCellCount) / float(totalSQLCount)) * 100
-            flickrCellCount = round(flickrCellCount * 2) / 2
+            csvCellCount = (int(csvCellCount) / float(totalCSVCount)) * 100
+            csvCellCount = round(csvCellCount * 2) / 2
 
-            nbnCellCount = (int(nbnCellCount) / float(totalCSVCount)) * 100
-            nbnCellCount = round(nbnCellCount * 2) / 2
+            sqlCountArray.append(sqlCellCount)
+            csvCountArray.append(csvCellCount)
 
-            flickrCountArray.append(flickrCellCount)
-            nbnCountArray.append(nbnCellCount)
+    # Calcualte each of the similarity results
+    # print keysList
 
-    print "flickrCountArray", flickrCountArray
-    print "nbnCountArray", nbnCountArray
-    # Calculate each of the similarity results
-    print len(flickrCountArray)
-    print len(nbnCountArray)
-
-    truePositive, trueNegative, falsePositive, falseNegative, total = mathcomp.confusionMatrix(nbnCountArray,flickrCountArray)
-    print "truePositive", truePositive
-    print "trueNegative", trueNegative
-    print "falsePositive", falsePositive
-    print "falseNegative", falseNegative
-    print "total", total
+    truePositive, trueNegative, falsePositive, falseNegative, total = mathcomp.confusionMatrix(sqlCountArray,
+                                                                                               csvCountArray, keysList)
 
     precision = mathcomp.precisionCalculation(truePositive, falsePositive)
-    precision = precision * 100
-    precision = round(precision, 2)
-    print precision
     recall = mathcomp.recallCalculation(truePositive, falseNegative)
-    recall = recall * 100
-    recall = round(recall, 2)
-    print recall
     f1 = mathcomp.f1Calculation(precision, recall)
-    f1 = round(f1, 2)
-    print f1
     accuracy = mathcomp.accuracyCalculation(truePositive, trueNegative, total)
-    accuracy = accuracy*100
-    accuracy = round(accuracy, 2)
+    print precision
+    print recall
+    print f1
     print accuracy
 
-
     newline = str(species) + "," + str(totalCSVCount) + "," + str(totalSQLCount) + " ,5 km," + str(
-        truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
-    with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_verified.csv', 'a') as f:
+        truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(
+        precision * 100) + "," + str(recall * 100) + "," + str(f1 * 100) + "," + str(accuracy * 100)
+    with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_verified3x3.csv', 'a') as f:
         f.write(newline + '\n')
         newline = ""

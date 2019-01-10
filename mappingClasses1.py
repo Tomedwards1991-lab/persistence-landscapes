@@ -60,16 +60,16 @@ class gridFunctions(object):
     # return the longitude/latitude coordinates
     # used to display a count number or marker in the centre of a cell
 
-    def getCSVCount(self, species, cur):
-        query = "SELECT Count(id) FROM nbn_section WHERE common_name ='" + species + "'"
+    def getCSVCount(self, cur):
+        query = "SELECT Count(id) FROM nbn_adder"
         cur.execute(query)
         csvCount = str(cur.fetchone())
         csvCount = re.search(r'\d+', csvCount)
         csvCount = csvCount.group()
         return (csvCount)
 
-    def getSQLCount(self, species, cur):
-        query = "SELECT Count(id) FROM flickr_section WHERE common_name ='" + species + "';"
+    def getSQLCount(self, cur):
+        query = "SELECT Count(id) FROM flickr_adder;"
         cur.execute(query)
         sqlCount = str(cur.fetchone())
         sqlCount = re.search(r'\d+', sqlCount)
@@ -103,10 +103,10 @@ class gridFunctions(object):
     # takes a lat and lon array which contain the coordiantes of a cell
     # calcualtes the exact center of a cell
     # determine how many Flickr records for a specific species are found within the cells bounding box
-    def getCellPhotoCountSQL(self, species, getCellLon, getCellLat, cur):
+    def getCellPhotoCountSQL(self, getCellLon, getCellLat, cur):
         query = "SELECT Count(id) FROM flickr_data WHERE longitude >= " + str(
             getCellLon[0]) + " and longitude <=" + str(getCellLon[3]) + " and latitude >= " + str(
-            getCellLat[1]) + " and latitude <=" + str(getCellLat[0]) + "and common_name='" + species + "'"
+            getCellLat[1]) + " and latitude <=" + str(getCellLat[0])
         cur.execute(query)
         count = str(cur.fetchone())
         count = re.search(r'\d+', count)
@@ -115,11 +115,11 @@ class gridFunctions(object):
 
     # Takes a latitude and longitude array which contain the coordinates of a cell
     # determine how many CSV records for a specific species are found within the cells bounding box
-    def getCellPhotoCountCSV(self, species, getCellLon, getCellLat, cur):
+    def getCellPhotoCountCSV(self, getCellLon, getCellLat, cur):
 
         query = "SELECT Count(id) FROM nbn_data WHERE longitude >= " + str(getCellLon[0]) + " and longitude <=" + str(
             getCellLon[3]) + " and latitude >= " + str(getCellLat[1]) + " and latitude <=" + str(
-            getCellLat[0]) + "and common_name='" + species + "'"
+            getCellLat[0])
         cur.execute(query)
         count = str(cur.fetchone())
         count = re.search(r'\d+', count)

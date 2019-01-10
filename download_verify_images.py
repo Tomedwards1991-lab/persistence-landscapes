@@ -3,6 +3,9 @@ import urllib, json, time
 import os
 import mysql.connector
 
+#######################################
+##########SET UP google session#######
+
 # Imports the Google Cloud client library
 #from google.api_core import protobuf_helpers as protobuf
 from google.cloud import vision
@@ -31,10 +34,8 @@ mydb.autocommit = True
 
 sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
                 "FROM nbn_top1000 n_top,nbn_dictionary_list n_dict " \
-                "WHERE flickr_count != 0 " \
-                "and flickr_exists IS NULL " \
-                "and n_top.uid = n_dict.uid " \
-                "and n_top.uid = 'NHMSYS0000875576'; " \
+                "WHERE n_top.scientific_name in ('Columba palumbus','Passer domesticus') " \
+                "and n_top.uid = n_dict.uid; " \
 
 
 mycursor.execute(sql_getFnames)
@@ -125,6 +126,7 @@ for name in flickr_names:
                 print('Labels:')
                 for label in labels:
                     label_description = str(label.description).lower()
+                    label_description = label_description.replace("'","''")
                     print "-------------VALUES FOR Google-scores------------"
                     print(photoid)
                     print(label_description)
