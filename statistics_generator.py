@@ -128,7 +128,7 @@ def createChart():
 
 def verifyImages():
     verified = []
-    sql = "select * from image_names,google_scores where image_names.image_id = google_scores.image_id and image_names.terms like '%adder%'"
+    sql = "select * from image_names,google_scores where image_names.image_id = google_scores.image_id and image_names.terms like '%greenfinch%'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     for item in myresult:
@@ -142,18 +142,20 @@ def verifyImages():
             term = term.replace("'","").strip()
             terms_cleaned.append(term)
             if term == google_label:
+                print "-------------------------Match------------------------------"
                 print image_id
                 verified.append(image_id)
-                #sql_up = "UPDATE image_names SET image_names.verify = 'yes' WHERE image_names.image_id = '" + image_id + "';"
-                #print sql_up
+                sql_up = "UPDATE image_names SET image_names.verify = 'yes' WHERE image_names.image_id = '" + image_id + "';"
+                print sql_up
 
-                #mycursor.execute(sql_up)
+                mycursor.execute(sql_up)
+
     print len(verified)
 
 def main():
-    #verifyImages()
+    verifyImages()
 
-    createChart()
+    #createChart()
     '''
     nbn_array = []
     flickr_array = []

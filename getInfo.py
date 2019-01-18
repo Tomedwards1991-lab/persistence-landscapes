@@ -39,8 +39,8 @@ for species_name in os.listdir('images'):
                           "&photo_id=" + photoid + \
                           "&format=json" \
                           "&nojsoncallback=1" \
- \
-                            print url
+
+                    print url
                     response = urllib.urlopen(url)
                     data = json.loads(response.read())
                     date_uploaded = data["photo"]["dateuploaded"]

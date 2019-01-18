@@ -1,4 +1,5 @@
 import mysql.connector
+import os
 
 mydb = mysql.connector.connect(
   host="csmysql.cs.cf.ac.uk",
@@ -10,36 +11,66 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 mydb.autocommit = True
 
-sql = "select i.image_id,i.terms,g.lable " \
-      "from image_names i, google_scores g " \
-      "where i.image_id = g.image_id; " \
+def getFromDB():
 
-mycursor.execute(sql)
-result = mycursor.fetchall()
+    sql = "select i.image_id, i.terms " \
+        "from image_names i " \
+        "where i.verify = 'yes';"
+
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    db_results = []
+
+    for row in result:
+        image_id =str(row[0])
+        terms = str(row[1]).replace("[","").replace("]","")
+        terms_array = terms.split(",")
+        common_name = terms_array[0]
+        db_results.append([image_id,common_name])
+
+    return db_results
 
 
-for i in result:
-    list_terms = []
-    image_id = str(i[0])
-    terms = str(i[1]).replace("[","").replace("]","")
-    label = str(i[2])
-    print image_id
-    print label
+def find(sp_name,id_name, path):
+    for root, dirs, files in os.walk(path):
+        root_str = str(root)
+        if len(root_str) > 15:
+            position = root_str.rfind('/')
+            root_match = root_str[position:]
+            root_match_l = root_match.lower()
+            root_match_l = root_match_l.replace("/","")
+            root_match_l = "'"+root_match_l+"'"
 
-    terms_array = terms.split(",")
-    for item in terms_array:
-        item = item[1:-1]
-        item = item.replace("'", "", 1)
-        item = item.strip()
-        list_terms.append(item)
+            if sp_name == root_match_l:
+                #print "root", root
+                for file in files:
+                    if id_name in file:
+                        id = id_name.replace('.jpg','')
+                        new_file_name = id+"_yes.jpg"
+                        print file
+                        print new_file_name
+                        old_dir = './Flickr_Images'+root_match+'/'+file
+                        new_dir = './Flickr_Images'+root_match+'/'+new_file_name
+                        print old_dir
+                        print new_dir
+                        os.rename(old_dir, new_dir)
+                    #return os.path.join(root, id_name)
 
-    print list_terms
-    if label in list_terms:
-        print "match"
-        print image_id
-        print label
-        mycursor.execute("UPDATE image_names SET verify = 'match', column2 = '"+label+"' WHERE image_id = '"+image_id+"';")
-    else:
-        print "no match"
-        mycursor.execute("UPDATE image_names SET verify = 'no match'")
 
+def main():
+    db_results = getFromDB()
+
+    for item in db_results:
+        id = str(item[0])
+        sp_name = str(item[1])
+        id_name = id+'.jpg'
+        find(sp_name,id_name, './Flickr_Images')
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    main()

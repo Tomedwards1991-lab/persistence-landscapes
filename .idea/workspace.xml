@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="606f4fd7-5b1b-4240-944b-599649288f49" name="Default" comment="verifying images through a table comparsion of the results">
-      <change afterPath="$PROJECT_DIR$/compareFlickrNBN1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/compareFlickrNBN_t.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flickr_overall.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mappingClasses.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mappingClasses_t.py" afterDir="false" />
+    <list default="true" id="606f4fd7-5b1b-4240-944b-599649288f49" name="Default" comment="spatial analysis on 1x1 cell">
+      <change afterPath="$PROJECT_DIR$/verificationImages.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compareFlickrNBN.py" beforeDir="false" afterPath="$PROJECT_DIR$/compareFlickrNBN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/download_verify_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/download_verify_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mappingClasses1.py" beforeDir="false" afterPath="$PROJECT_DIR$/mappingClasses1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nbn_names.py" beforeDir="false" afterPath="$PROJECT_DIR$/nbn_names.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/getInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/getInfo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/statistics_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/statistics_generator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/verify.py" beforeDir="false" afterPath="$PROJECT_DIR$/verify.py" afterDir="false" />
     </list>
@@ -22,16 +16,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/persistence_landscapes$statistics_generator.coverage" NAME="statistics_generator Coverage Results" MODIFIED="1546952020714" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$download_verify_images.coverage" NAME="download_verify_images Coverage Results" MODIFIED="1547113544126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$statistics_generator.coverage" NAME="statistics_generator Coverage Results" MODIFIED="1547221837298" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$download_verify_images.coverage" NAME="download_verify_images Coverage Results" MODIFIED="1547641476946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$verificationImages.coverage" NAME="verificationImages Coverage Results" MODIFIED="1547806157313" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$compareFlickrNBN_t.coverage" NAME="compareFlickrNBN_t Coverage Results" MODIFIED="1547113213145" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$verify.coverage" NAME="verify Coverage Results" MODIFIED="1544374981303" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$verify.coverage" NAME="verify Coverage Results" MODIFIED="1547145311217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$verifyImages.coverage" NAME="verifyImages Coverage Results" MODIFIED="1544199539706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$mappingClasses1.coverage" NAME="mappingClasses1 Coverage Results" MODIFIED="1543854039965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$dbConnection.coverage" NAME="dbConnection Coverage Results" MODIFIED="1543854009772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$image_download.coverage" NAME="image_download Coverage Results" MODIFIED="1544193274816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$flickr_overall.coverage" NAME="flickr_overall Coverage Results" MODIFIED="1546532036635" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$compareFlickrNBN.coverage" NAME="compareFlickrNBN Coverage Results" MODIFIED="1546853524755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$compareFlickrNBN.coverage" NAME="compareFlickrNBN Coverage Results" MODIFIED="1547160112168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$test.coverage" NAME="test Coverage Results" MODIFIED="1543182824981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$nbn_names.coverage" NAME="nbn_names Coverage Results" MODIFIED="1546519917596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$main.coverage" NAME="main Coverage Results" MODIFIED="1543182431121" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -79,8 +74,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/download_verify_images.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="36" column="68" selection-start-line="36" selection-start-column="68" selection-end-line="36" selection-end-column="68" />
+            <state relative-caret-position="148">
+              <caret line="73" selection-start-line="73" selection-end-line="73" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -89,10 +84,79 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/compareFlickrNBN.py">
+        <entry file="file://$PROJECT_DIR$/statistics_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="26" />
+            <state relative-caret-position="859">
+              <caret line="114" column="38" selection-start-line="114" selection-start-column="38" selection-end-line="114" selection-end-column="38" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/getFlickr.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-423">
+              <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/compareFlickrNBN_t.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1290">
+              <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/compareFlickrNBN1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="597">
+              <caret line="78" column="30" selection-start-line="78" selection-start-column="30" selection-end-line="78" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/getInfo.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="368">
+              <caret line="35" selection-start-line="35" selection-end-line="35" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/verificationImages.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="99" column="26" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ssl.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="48">
+              <caret line="839" selection-start-line="839" selection-end-line="839" />
             </state>
           </provider>
         </entry>
@@ -106,59 +170,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/mappingClasses1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="162" column="69" lean-forward="true" selection-start-line="162" selection-start-column="69" selection-end-line="162" selection-end-column="69" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/compareFlickrNBN_t.py">
+        <entry file="file://$PROJECT_DIR$/flickr_overall.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="537">
-              <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mappingClasses_t.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-542">
-              <caret line="61" column="25" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mappingClasses.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-747">
-              <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#40#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/compareFlickrNBN1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="75" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="254">
+              <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -192,7 +208,11 @@
       <find>remove</find>
       <find>insert_top1000_nbn</find>
       <find>getCellPhotoCountSQL</find>
+      <find>place</find>
       <find>getCellPhotoCountSQL()</find>
+      <find>sql getting names</find>
+      <find>client</find>
+      <find>sql gett</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -210,27 +230,28 @@
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/getFlickr.py" />
-        <option value="$PROJECT_DIR$/getInfo.py" />
         <option value="$PROJECT_DIR$/dbConnection.py" />
         <option value="$PROJECT_DIR$/image_download.py" />
         <option value="$PROJECT_DIR$/verifyImages.py" />
-        <option value="$PROJECT_DIR$/verify.py" />
         <option value="$PROJECT_DIR$/nbn_names.py" />
         <option value="$PROJECT_DIR$/flickr_overall.py" />
         <option value="$PROJECT_DIR$/compareFlickrNBN.py" />
         <option value="$PROJECT_DIR$/mappingClasses1.py" />
         <option value="$PROJECT_DIR$/compareFlickrNBN1.py" />
         <option value="$PROJECT_DIR$/mappingClasses.py" />
-        <option value="$PROJECT_DIR$/statistics_generator.py" />
         <option value="$PROJECT_DIR$/mappingClasses_t.py" />
-        <option value="$PROJECT_DIR$/download_verify_images.py" />
         <option value="$PROJECT_DIR$/compareFlickrNBN_t.py" />
+        <option value="$PROJECT_DIR$/verify.py" />
+        <option value="$PROJECT_DIR$/getInfo.py" />
+        <option value="$PROJECT_DIR$/statistics_generator.py" />
+        <option value="$PROJECT_DIR$/download_verify_images.py" />
+        <option value="$PROJECT_DIR$/verificationImages.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="425" />
-    <option name="y" value="29" />
+    <option name="x" value="184" />
+    <option name="y" value="23" />
     <option name="width" value="1920" />
     <option name="height" value="1123" />
   </component>
@@ -281,7 +302,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.statistics_generator">
+  <component name="RunManager" selected="Python.verificationImages">
     <configuration name="compareFlickrNBN" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="persistence-landscapes" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -296,50 +317,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/compareFlickrNBN.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="compareFlickrNBN1" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="persistence-landscapes" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/compareFlickrNBN1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="compareFlickrNBN_t" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="persistence-landscapes" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/compareFlickrNBN_t.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -393,20 +370,66 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="verificationImages" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="persistence-landscapes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="GOOGLE_APPLICATION_CREDENTIALS" value="apikey.json" />
+        <env name="PYTHONHTTPSVERIFY" value="0" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/verificationImages.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="verify" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="persistence-landscapes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/verify.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.download_verify_images" />
       <item itemvalue="Python.statistics_generator" />
+      <item itemvalue="Python.verify" />
       <item itemvalue="Python.compareFlickrNBN" />
-      <item itemvalue="Python.compareFlickrNBN1" />
-      <item itemvalue="Python.compareFlickrNBN_t" />
+      <item itemvalue="Python.verificationImages" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.verificationImages" />
         <item itemvalue="Python.download_verify_images" />
-        <item itemvalue="Python.compareFlickrNBN_t" />
-        <item itemvalue="Python.compareFlickrNBN1" />
         <item itemvalue="Python.statistics_generator" />
         <item itemvalue="Python.compareFlickrNBN" />
+        <item itemvalue="Python.verify" />
       </list>
     </recent_temporary>
   </component>
@@ -427,7 +450,8 @@
       <workItem from="1544360486604" duration="15343000" />
       <workItem from="1545997399082" duration="289000" />
       <workItem from="1545997967059" duration="199000" />
-      <workItem from="1546507512160" duration="66644000" />
+      <workItem from="1546507512160" duration="79112000" />
+      <workItem from="1547458811675" duration="26509000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1543181523694</created>
@@ -541,11 +565,18 @@
       <option name="project" value="LOCAL" />
       <updated>1544375537253</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="download and verify images">
+      <created>1547122681444</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1547122681444</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="151649000" />
+    <option name="totallyTimeSpent" value="190626000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -557,10 +588,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="425" y="29" width="1920" height="1123" extended-state="0" />
+    <frame x="184" y="23" width="1920" height="1123" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1315229" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13258786" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -635,7 +666,8 @@
     <MESSAGE value="verify images using google cloud api" />
     <MESSAGE value="combining downloading and verifying images" />
     <MESSAGE value="verifying images through a table comparsion of the results" />
-    <option name="LAST_COMMIT_MESSAGE" value="verifying images through a table comparsion of the results" />
+    <MESSAGE value="download and verify images" />
+    <option name="LAST_COMMIT_MESSAGE" value="download and verify images" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -695,13 +727,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ssl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11220">
-          <caret line="765" selection-start-line="765" selection-end-line="765" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/mysql/connector/network.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3540">
@@ -723,47 +748,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/getInfo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-821">
-          <caret line="16" selection-start-line="16" selection-end-line="16" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/getFlickr.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="30" column="17" lean-forward="true" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/verify.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flickr_overall.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1459">
-          <caret line="87" column="37" selection-start-line="87" selection-start-column="37" selection-end-line="87" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbConnection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nbn_names.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-478">
@@ -774,19 +758,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/statistics_generator.py">
+    <entry file="file://$PROJECT_DIR$/verify.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="164" column="29" lean-forward="true" selection-start-line="164" selection-start-column="29" selection-end-line="164" selection-end-column="29" />
+        <state relative-caret-position="228">
+          <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="52" selection-end-column="80" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mappingClasses_t.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="915">
+          <caret line="61" column="25" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mappingClasses.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-747">
+        <state relative-caret-position="285">
           <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
           <folding>
             <element signature="e#0#40#0" expanded="true" />
@@ -794,59 +785,128 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mappingClasses_t.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-542">
-          <caret line="61" column="25" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/download_verify_images.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="36" column="68" selection-start-line="36" selection-start-column="68" selection-end-line="36" selection-end-column="68" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/compareFlickrNBN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/compareFlickrNBN1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="75" selection-end-column="17" />
+        <state relative-caret-position="-1008">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/compareFlickrNBN_t.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="537">
-          <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mappingClasses1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="162" column="69" lean-forward="true" selection-start-line="162" selection-start-column="69" selection-end-line="162" selection-end-column="69" />
+        <state relative-caret-position="2400">
+          <caret line="160" column="61" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/getFlickr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-423">
+          <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compareFlickrNBN_t.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1290">
+          <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compareFlickrNBN1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="597">
+          <caret line="78" column="30" selection-start-line="78" selection-start-column="30" selection-end-line="78" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/getInfo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbConnection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ssl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="839" selection-start-line="839" selection-end-line="839" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/statistics_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="859">
+          <caret line="114" column="38" selection-start-line="114" selection-start-column="38" selection-end-line="114" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/download_verify_images.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="73" selection-start-line="73" selection-end-line="73" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flickr_overall.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/verificationImages.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="99" column="26" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

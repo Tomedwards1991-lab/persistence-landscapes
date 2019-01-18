@@ -33,8 +33,8 @@ mycursor = mydb.cursor()
 mydb.autocommit = True
 
 sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
-                "FROM nbn_top1000 n_top,nbn_dictionary_list n_dict " \
-                "WHERE n_top.scientific_name in ('Columba palumbus','Passer domesticus') " \
+                "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
+                "WHERE n_top.scientific_name in ('Sturnus vulgaris','Pica pica','Carduelis carduelis','Troglodytes troglodytes','Corvus corone subsp. corone','Turdus philomelos','Aegithalos caudatus') " \
                 "and n_top.uid = n_dict.uid; " \
 
 
@@ -75,7 +75,6 @@ for name in flickr_names:
             print "species name: ",speciesname
 
             time.sleep(1)
-
 
             
             file = "Flickr_Images/" + speciesname + "/" + str(photoid) + ".jpg"
@@ -137,3 +136,6 @@ for name in flickr_names:
             continue
         except ValueError:
             continue
+
+    mycursor.close()
+    mydb.close()
