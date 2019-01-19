@@ -3,7 +3,7 @@ import urllib, json, time
 import os
 import mysql.connector
 
-#######################################
+#######################§################
 ##########SET UP google session#######
 
 # Imports the Google Cloud client library
