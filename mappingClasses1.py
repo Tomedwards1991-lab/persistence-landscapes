@@ -1,9 +1,5 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import re
-import sys
-import math
-from dbConnection import *
+
 
 
 # counts occurences of both NBN and Flickr within each cell of a grid
@@ -11,7 +7,7 @@ from dbConnection import *
 # in order to adjust code to work for ajucent cells
 # we need to find the ids of the adjusent cells and change the code for confusion matrix
 class gridFunctions(object):
-    # species = "Adder"
+
     # Four corners of the map / grid
     lowLat = 49.00
     highLat = 61.00

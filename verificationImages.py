@@ -39,6 +39,7 @@ def finish(mydb,mycursor):
 
 def mainQuery(mydb,mycursor):
     result = []
+
     sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
                     "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
                     "WHERE n_top.common_name not in ('Adder','Blackbird','Blue Tit','Carrion Crow','Chaffinch','Coal Tit','Collared Dove','Common Carder Bee','Continental Robin'," \
@@ -49,13 +50,17 @@ def mainQuery(mydb,mycursor):
                     "'Spinach','Olive Pearl','Herald','Bream Flat','Miller','Hop','Carrot','Blinks','Bleak','Streak','Honesty','Buzzard','Black Rustic','Broken-Barred Carpet','Buzzard','Carrion Crow','Collared Dove'," \
                     "'Common Bonnet','Common Carder Bee','Cow Parsely','Danish Scurvygrass','Early Bumble Bee','Fan-Foot','Hoary Willowherb','Irish Yew','July Highflyer','Large Red Damselfly','Magpie'," \
                     "'Minnow','Pearl Bordered Fritillary','Razorbill','Red Fescue','Sand Martin','Song Thrush','Stone-Curlew','Thale Cress','Tree Sparrow','White-Tailed Bumble Bee','Whitish Feather-moss'," \
-                    "'Cow Parsley','Field Maple','Otter') " \
+                    "'Cow Parsley','Field Maple','Otter','Barn Owl','Bee Orchid') " \
                     "and n_top.uid = n_dict.uid; " \
+
+    sql_getFnames1 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
+                    "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
+                    "WHERE n_top.common_name = 'Barn Owl';" \
 
     mycursor.execute(sql_getFnames)
     flickr_names = mycursor.fetchall()
+    all_names_list = []
     for name in flickr_names:
-        all_names_list = []
         uid = name[0]
         common_name = name[2]
         common_name = common_name.replace("'s", "''s")
@@ -70,10 +75,10 @@ def mainQuery(mydb,mycursor):
             i = i.lower()
             all_names_list.append(i)
 
-        all_names_list = unique(all_names_list)
+    all_names_list = unique(all_names_list)
 
 
-    return result,uid,all_names_list
+    return result
 
 def iter_row(mycursor1, size=100):
     while True:
@@ -105,8 +110,10 @@ def getFlickr(mydb1,mycursor1,result):
     return flickr_data
 
 
-def getPhotosAndLabels(flickr_data,mydb2, mycursor2,uid,all_names_list):
+def getPhotosAndLabels(flickr_data):
     print "HELLO"
+    image_table = []
+    google_table = []
     # Instantiates a client
     client = vision.ImageAnnotatorClient()
 
@@ -151,12 +158,17 @@ def getPhotosAndLabels(flickr_data,mydb2, mycursor2,uid,all_names_list):
 
                 print "--------For the image table--------"
                 print "photoid: ", photoid
-                print "uid: ", uid
-                print "all_names: ", all_names_list
-                image_table_id = str(photoid)+"."+str(speciesname)
-                print image_table_id
-                mycursor2.execute('INSERT IGNORE INTO image_names VALUES ("' + str(image_table_id) + '","' + str(uid) + '","' + str(all_names_list) + '",' + '"nothing","nothing");')
 
+                image_table_id = str(photoid)+"."+str(speciesname)
+                #print image_table_id
+                nothing = "nothing"
+                #image_table.append([str(image_table_id),"need update","need update",nothing,nothing])
+                mydb2, mycursor2 = dbConnection()
+                sql_image = 'INSERT IGNORE INTO image_names VALUES ("' + str(image_table_id)+'","need filling","nothing","nothing","nothing");'
+                mycursor2.execute('INSERT IGNORE INTO image_names VALUES ("' + str(image_table_id)+'","need filling","nothing","nothing","nothing");')
+                print sql_image
+                #print "IMAGE INSERT FINISHED"
+                finish(mydb2, mycursor2)
                 # Loads the image into memory
                 with io.open(file_name, 'rb') as image_file:
                     content = image_file.read()
@@ -176,26 +188,52 @@ def getPhotosAndLabels(flickr_data,mydb2, mycursor2,uid,all_names_list):
                     print(label_description)
                     print(label.score)
                     google_id = str(photoid)+"."+str(speciesname)
-                    mycursor2.execute("INSERT INTO google_scores VALUES ('" + str(google_id) + "','" + label_description + "','" + str(label.score) + "');")
-
+                    google_table.append([str(google_id),label_description,str(label.score)])
+                    mydb3, mycursor3 = dbConnection()
+                    sql_g = "INSERT INTO google_scores VALUES ('" + str(google_id) + "','" + label_description + "','" + str(label.score) + "');"
+                    mycursor3.execute("INSERT INTO google_scores VALUES ('" + str(google_id) + "','" + label_description + "','" + str(label.score) + "');")
+                    print sql_g
+                    #print "GOOGLE INSERT FINISHED"
+                    finish(mydb3, mycursor3)
         except KeyError:
             continue
         except ValueError:
             continue
 
+    #return image_table,google_table
+
+def imageTinsert(image_table,mycursor2):
+    mycursor2.execute("INSERT IGNORE INTO image_names VALUES ('?','?','?','?','?'),image_table;")
+    print "Image_insert success"
+
+def googleTinsert(google_table,mycursor3):
+    mycursor3.execute("INSERT INTO google_scores VALUES ('?','?','?'),google_table;")
+    print "Google insert success"
 
 def main():
     mydb, mycursor = dbConnection()
-    result,uid,all_names_list = mainQuery(mydb,mycursor)
+    result = mainQuery(mydb,mycursor)
+    print "result: ",result
+
     finish(mydb, mycursor)
+
 
     mydb1, mycursor1 = dbConnection()
     flickr_data = getFlickr(mydb1, mycursor1, result)
     finish(mydb1, mycursor1)
 
+    #image_table, google_table = getPhotosAndLabels(flickr_data, uid, all_names_list)
+    getPhotosAndLabels(flickr_data)
+
+    '''
     mydb2, mycursor2 = dbConnection()
-    getPhotosAndLabels(flickr_data,mydb2, mycursor2,uid,all_names_list)
+    imageTinsert(image_table, mycursor2)
     finish(mydb2, mycursor2)
+
+    mydb3, mycursor3 = dbConnection()
+    googleTinsert(google_table, mycursor3)
+    finish(mydb3, mycursor3)
+    '''
 
 
 

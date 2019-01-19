@@ -1,9 +1,12 @@
 import mysql.connector
 import matplotlib.pyplot as plt
+import re
+import os
 import csv
 import numpy as np
 from unidecode import unidecode
 
+'''
 mydb = mysql.connector.connect(
     host="csmysql.cs.cf.ac.uk",
     user="c1114882",
@@ -13,6 +16,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 mydb.autocommit = True
+'''
 
 def getData():
     flickr_counts = []
@@ -30,6 +34,14 @@ def getData():
         names.append(name)
 
     return flickr_counts,nbn_counts,names
+
+def flickrCounts():
+    query = "SELECT Count(id) FROM temp"
+    mycursor.execute(query)
+    flickrCount = str(mycursor.fetchone())
+    flickrCount = re.search(r'\d+', flickrCount)
+    flickrCount = flickrCount.group()
+    return int(flickrCount)
 
 def countCategories(category):
     nbn = ""
@@ -152,8 +164,86 @@ def verifyImages():
 
     print len(verified)
 
+def removeDsStore(directory):
+    if os.path.exists(directory + "/.DS_Store"):
+        os.remove(directory + "/.DS_Store")
+
+def iter_row(mycursor1, size=100):
+    while True:
+        rows = mycursor1.fetchmany(size)
+        if not rows:
+            break
+        for row in rows:
+            yield row
+
+def fixImages():
+
+    names = ['Long-Tailed Tit','Magpie','Large Red Damselfly','Cow Parsley','Tree Sparrow','Buzzard','Razorbill','Common Lizard','Silver-Washed Fritillary','Otter','Barn Owl','Bell Heather','Bluebell','Black-poplar','Bee Orchid','Fan-Foot','Red-Fescue','Sand Martin','Black Rustic']
+    new_names = []
+    removeDsStore('Flickr_Images')
+    for species_name in os.listdir('Flickr_Images'):
+        if species_name not in names:
+            for image in os.listdir('Flickr_Images/' + species_name):
+                image_name = image.replace(".jpg","").replace("_yes","")
+                new_name = species_name+"."+image_name
+
+                new_names.append(new_name)
+
+    mydb = mysql.connector.connect(
+        host="csmysql.cs.cf.ac.uk",
+        user="c1114882",
+        passwd="thom9055",
+        database="c1114882"
+    )
+    for item in new_names:
+        species_name = item.split(".")[0]
+        image_name = item.split(".")[1]
+        print species_name, image_name
+        print item
+
+
+        mycursor = mydb.cursor()
+        mydb.autocommit = True
+        sql_up = "UPDATE image_names SET image_names.image_id = '"+item+"' WHERE image_names.image_id = '" + image_name + "';"
+        print sql_up
+        mycursor.execute(sql_up)
+
+    mycursor.close()
+    mydb.close()
+
+
+    '''
+    ids = []
+    mydb = mysql.connector.connect(
+        host="csmysql.cs.cf.ac.uk",
+        user="c1114882",
+        passwd="thom9055",
+        database="c1114882"
+    )
+
+    mycursor = mydb.cursor()
+    mydb.autocommit = True
+
+    sql_images = "select image_id from image_names where image_id not like '%.%';"
+
+    mycursor.execute(sql_images)
+
+    for x in iter_row(mycursor, 100):
+        photoid = str(x[0])
+        ids.append(photoid)
+
+    mycursor.close()
+    mydb.close()
+    '''
+
+
+
+
+
 def main():
-    verifyImages()
+    #print flickrCounts()
+    #verifyImages()
+    fixImages()
 
     #createChart()
     '''
