@@ -100,27 +100,18 @@ def createGrid(columnNum, lowLat, highLat, leftLon, rightLon):
 
 # get the id and the coordiantes for each corner of each cell of the grid
 def getCellByID(gridLatArray, gridLonArray, squareID, rowNum):
-    #print "square_id: ",squareID
     getCellLat = []
     getCellLat.append(gridLatArray[squareID])
-    #print "first getCellLat: ",getCellLat
     getCellLat.append(gridLatArray[squareID + 1])
-    #print "second getCellLat: ", getCellLat
     getCellLat.append(gridLatArray[squareID + rowNum + 1])
-    #print "third getCellLat: ", getCellLat
     getCellLat.append(gridLatArray[squareID + rowNum])
-    #print "forth getCellLat: ", getCellLat
     getCellLat.append(gridLatArray[squareID])
 
     getCellLon = []
     getCellLon.append(gridLonArray[squareID])
-    #print "first getCellLon: ",getCellLon
     getCellLon.append(gridLonArray[squareID + 1])
-    #print "second getCellLon: ", getCellLon
     getCellLon.append(gridLonArray[squareID + rowNum + 1])
-    #print "third getCellLon: ", getCellLon
     getCellLon.append(gridLonArray[squareID + rowNum])
-    #print "forth getCellLon: ", getCellLon
     getCellLon.append(gridLonArray[squareID])
 
     return getCellLat, getCellLon
@@ -150,7 +141,11 @@ def getNBNCells(getCellLat, getCellLon,i,nbnCoord,nbn_result):
 
 
 
-def confusionMatrix(flickr_extended, nbn_extended):
+def confusionMatrix(flickr_extended, nbn_extended,columnNum):
+
+    #adjust = [rowNum*columnNum-2,rowNum*columnNum-1,rowNum*columnNum]
+    #all_banned = first_row_ids+last_row_ids+first_col_ids+last_col_ids+adjust
+
 
     total = len(flickr_extended)
 
@@ -159,20 +154,50 @@ def confusionMatrix(flickr_extended, nbn_extended):
     falsePositive = 0
     falseNegative = 0
 
+
     for i in range(0, total):
-        if (nbn_extended[i][1] != 0 and flickr_extended[i][1] != 0):
-            truePositive = truePositive + 1
 
-        if (nbn_extended[i][1] == 0 and flickr_extended[i][1] == 0):
-            trueNegative = trueNegative + 1
+        if (i-columnNum-1) < total and (i-1) < total and (i+columnNum-1) < total and (i+columnNum) < total and (i-columnNum) < total and (i-columnNum+1) < total and (i+columnNum+1) < total:
+            print flickr_extended[i][0]
+            print nbn_extended[i-columnNum-1][1]
+            print nbn_extended[i-1][1]
+            print nbn_extended[i][1]
+            print nbn_extended[i+columnNum-1][1]
+            print nbn_extended[i+columnNum][1]
+            print nbn_extended[i-columnNum][1]
+            print nbn_extended[i-columnNum+1][1]
+            print nbn_extended[i+1][1]
+            print nbn_extended[i+columnNum+1][1]
 
-        if (nbn_extended[i][1] != 0 and flickr_extended[i][1] == 0):
-            falseNegative = falseNegative + 1
 
-        if (nbn_extended[i][1] == 0 and flickr_extended[i][1] != 0):
-            falsePositive = falsePositive + 1
+            if (flickr_extended[i][1] != 0 and nbn_extended[i][1] != 0 or nbn_extended[i-columnNum-1][1] !=0 or
+                nbn_extended[i-1][1] != 0 or nbn_extended[i+columnNum-1][1] != 0 or nbn_extended[i+columnNum][1] !=0 or
+                nbn_extended[i-columnNum][1] != 0 or nbn_extended[i-columnNum+1][1] != 0 or nbn_extended[i+1][1] !=0 or
+                nbn_extended[i + columnNum + 1][1] != 0):
+
+                truePositive = truePositive + 1
+
+            if (flickr_extended[i][1] == 0 and nbn_extended[i][1] == 0 and nbn_extended[i-columnNum-1][1] == 0 and
+                nbn_extended[i-1][1] == 0 and nbn_extended[i+columnNum-1][1] == 0 and nbn_extended[i+columnNum][1] == 0 and
+                nbn_extended[i-columnNum][1] == 0 and nbn_extended[i-columnNum+1][1] == 0 and nbn_extended[i+1][1] == 0 and
+                nbn_extended[i + columnNum + 1][1] == 0):
+                trueNegative = trueNegative + 1
+
+            if (flickr_extended[i][1] == 0 and nbn_extended[i][1] != 0 or nbn_extended[i-columnNum-1][1] !=0 or
+                nbn_extended[i-1][1] != 0 or nbn_extended[i+columnNum-1][1] != 0 or nbn_extended[i+columnNum][1] !=0 or
+                nbn_extended[i-columnNum][1] != 0 or nbn_extended[i-columnNum+1][1] != 0 or nbn_extended[i+1][1] !=0 or
+                nbn_extended[i + columnNum + 1][1] != 0):
+                falseNegative = falseNegative + 1
+
+            if (flickr_extended[i][1] != 0 and nbn_extended[i][1] == 0 and nbn_extended[i-columnNum-1][1] == 0 and
+                nbn_extended[i-1][1] == 0 and nbn_extended[i+columnNum-1][1] == 0 and nbn_extended[i+columnNum][1] == 0 and
+                nbn_extended[i-columnNum][1] == 0 and nbn_extended[i-columnNum+1][1] == 0 and nbn_extended[i+1][1] == 0 and
+                nbn_extended[i + columnNum + 1][1] == 0):
+                falsePositive = falsePositive + 1
+
 
     return (truePositive, trueNegative, falsePositive, falseNegative, total)
+
 
 def main():
     mydb, mycursor = dbConnection()
@@ -191,22 +216,22 @@ def main():
     leftLon = -11.50
     rightLon = 2.00
 
-    cells = [20,30,40,45,55]
+    cells = [20,30,40,45]
 
     for c in cells:
-        print "cell size: ",c
         columnNum = numOfCells(c)
+
 
         # create the grid
         lonArray, latArray, lowLat, rowNum = createGrid(columnNum, lowLat, highLat, leftLon, rightLon)
-        #print "lonArray: ",lonArray
-        #print "latArray: ",latArray
+        print "lonArray: ",lonArray
+        print "latArray: ",latArray
         print "lowLat: ",lowLat
         rowNum = rowNum - 1
         print "rowNum: ",rowNum
+        columnNum = columnNum - 1
         print "columnNum: ",columnNum
-        columnNum = columnNum-1
-
+        print c
         flickr_extended = []
         nbn_extended = []
         all_ids = []
@@ -218,6 +243,24 @@ def main():
             getFlickrCells(getCellLat, getCellLon,i,flickrCoord,flickr_result)
             getNBNCells(getCellLat, getCellLon, i, nbnCoord,nbn_result)
             all_ids.append(i)
+
+
+
+        first_row_ids = []
+        last_row_ids = []
+        first_col_ids = []
+        last_col_ids = []
+        for first_row in range(0,columnNum):
+            first_row_ids.append(first_row)
+
+        for last_row in range((rowNum * columnNum) - 18,(rowNum * columnNum) - 1):
+            last_row_ids.append(last_row)
+
+        for first_col in range(0,(rowNum * columnNum) - 15,columnNum):
+            first_col_ids.append(first_col)
+
+        for last_col in range(columnNum-1,(rowNum * columnNum),columnNum):
+            last_col_ids.append(last_col)
 
 
         for res in all_ids:
@@ -234,12 +277,16 @@ def main():
 
         print "len flickr: ",len(flickr_extended)
         print "nbn len: ", len(nbn_extended)
-        truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(flickr_extended, nbn_extended)
+        truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(flickr_extended, nbn_extended,columnNum)
+
+
         print "tp: ",truePositive
         print "tn: ",trueNegative
         print "fp: ",falsePositive
         print "fn: ",falseNegative
-        print "total: ",total
+
+
+
         precision = float(truePositive) / (falsePositive + truePositive)
         recall = float(truePositive) / (truePositive + falseNegative)
         accuracy = (truePositive + trueNegative) / float(total)
@@ -249,10 +296,11 @@ def main():
         print "accuracy: ", accuracy
         print "f1 measure: ", f1
 
-        newline = "Adder," + str(nbnCount) + "," + str(flickrCount) + ",800,"+str(c)+"," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
-        with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_third.csv', 'a') as f:
+        newline = "Adder," + str(nbnCount) + "," + str(flickrCount) + "," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
+        with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_3x3.csv', 'a') as f:
             f.write(newline + '\n')
             newline = ""
+
 
 
 if __name__ == '__main__':
