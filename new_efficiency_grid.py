@@ -244,7 +244,7 @@ def main():
     rightLon = 2.00
 
     #cells_l = [20,30,40,45,55]
-    cells = [5]
+    cells = [5, 10, 15, 25, 35, 50, 60]
 
     for c in cells:
         print "cell size: ",c
@@ -260,7 +260,6 @@ def main():
         print "columnNum: ",columnNum
         #columnNum = columnNum-1
 
-        monthList = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
         all_ids = []
         flickr_result = []
         nbn_result = []
@@ -319,7 +318,8 @@ def main():
                 new_flickr.append(new_item_l_1)
 
 
-
+        print "flickr len: ",len(new_flickr)
+        print "nbn len: ",len(new_nbn)
         
         truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(new_flickr, new_nbn)
 
@@ -338,12 +338,12 @@ def main():
         print "accuracy: ", accuracy
         print "f1 measure: ", f1
 
-        '''
+
         newline = "Adder," + str(nbnCount) + "," + str(flickrCount) + ",800,"+str(c)+"," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
         with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_temp3months.csv', 'a') as f:
             f.write(newline + '\n')
             newline = ""
-        '''
+
 
 if __name__ == '__main__':
     main()

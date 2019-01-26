@@ -149,7 +149,7 @@ def getCellByID(gridLatArray, gridLonArray, squareID, rowNum):
 
 # check whether there are any flickr occurences in a given cell
 def getFlickrCells(getCellLat, getCellLon, i, flickrCoord, flickr_result):
-    monthList = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
+    monthList = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]
     for f_coord in flickrCoord:
         f_lat = f_coord[0]
         f_lon = f_coord[1]
@@ -160,8 +160,6 @@ def getFlickrCells(getCellLat, getCellLon, i, flickrCoord, flickr_result):
                 flickr_result.append([i, 1, 1])
             if month in monthList[1]:
                 flickr_result.append([i, 2, 1])
-            if month in monthList[2]:
-                flickr_result.append([i, 3, 1])
 
         # else:
         # if month in monthList[0]:
@@ -174,7 +172,7 @@ def getFlickrCells(getCellLat, getCellLon, i, flickrCoord, flickr_result):
 
 # check whether there are any nbn occurences in a given cell
 def getNBNCells(getCellLat, getCellLon, i, nbnCoord, nbn_result):
-    monthList = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
+    monthList = [[1, 2, 3, 4, 5, 6], [7, 8, 9,10, 11, 12]]
     for n_coord in nbnCoord:
         n_lat = n_coord[0]
         n_lon = n_coord[1]
@@ -185,8 +183,6 @@ def getNBNCells(getCellLat, getCellLon, i, nbnCoord, nbn_result):
                 nbn_result.append([i, 1, 1])
             if month in monthList[1]:
                 nbn_result.append([i, 2, 1])
-            if month in monthList[2]:
-                nbn_result.append([i, 3, 1])
         # else:
         # if month in monthList[0]:
         # nbn_result.append([i, 1, 0])
@@ -255,13 +251,14 @@ def main():
 
         # create the grid
         lonArray, latArray, lowLat, rowNum = createGrid(columnNum, lowLat, highLat, leftLon, rightLon)
-        print "lonArray: ", lonArray
-        print "latArray: ", latArray
+        #print "lonArray: ", lonArray
+        #print "latArray: ", latArray
         print "lowLat: ", lowLat
         rowNum = rowNum - 1
         print "rowNum: ", rowNum
-        print "columnNum: ", columnNum
         columnNum = columnNum-1
+        print "columnNum: ", columnNum
+
 
         all_ids = []
         flickr_result = []
@@ -280,10 +277,8 @@ def main():
         for id in all_ids:
             all_ids_months.append([id, 1, 0])
             all_ids_months.append([id, 2, 0])
-            all_ids_months.append([id, 3, 0])
             all_ids_months.append([id, 1, 1])
             all_ids_months.append([id, 2, 1])
-            all_ids_months.append([id, 3, 1])
 
         new_nbn = []
         for item in all_ids_months:
@@ -297,7 +292,7 @@ def main():
                 ar1_item = int(array_items[0].strip())
                 ar2_item = int(array_items[1].strip())
                 ar3_item = int(array_items[2].strip())
-                new_item_l = [ar1_item, ar2_item, ar3_item]
+                new_item_l = [ar1_item, ar2_item,ar3_item]
                 # print "new_item_l: ",new_item_l
                 new_nbn.append(new_item_l)
 
@@ -312,13 +307,16 @@ def main():
                 array_items_1 = new_item_1.split(",")
                 ar1_item_1 = int(array_items_1[0].strip())
                 ar2_item_1 = int(array_items_1[1].strip())
-                ar3_item_1 = int(array_items_1[2].strip())
-                new_item_l_1 = [ar1_item_1, ar2_item_1, ar3_item_1]
+                ar3_item_1 = int(array_items[2].strip())
+                new_item_l_1 = [ar1_item_1, ar2_item_1,ar3_item_1]
                 # print "new_item_l_1: ", new_item_l_1
                 new_flickr.append(new_item_l_1)
 
         print "flickr len: ", len(new_flickr)
         print "nbn len: ", len(new_nbn)
+
+        for f_pl in new_flickr:
+            print f_pl
 
         truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(new_flickr, new_nbn)
 
@@ -338,7 +336,7 @@ def main():
         print "f1 measure: ", f1
 
         newline = "Adder," + str(nbnCount) + "," + str(flickrCount) + ",800," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
-        with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_temp3months.csv', 'a') as f:
+        with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_temp6months.csv', 'a') as f:
             f.write(newline + '\n')
             newline = ""
 
