@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="606f4fd7-5b1b-4240-944b-599649288f49" name="Default" comment="grid comparisons">
-      <change afterPath="$PROJECT_DIR$/gridComp1_temp3_year.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gridComp1_temp6_year.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gridComp3_temp3_year.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gridComp3_temp6_year.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grid3Comparisons_t.py" beforeDir="false" afterPath="$PROJECT_DIR$/grid3Comparisons_t.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grid3Comparisons_t6.py" beforeDir="false" afterPath="$PROJECT_DIR$/grid3Comparisons_t6.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gridComparisons_t6.py" beforeDir="false" afterPath="$PROJECT_DIR$/gridComparisons_t6.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grids3comparisons.py" beforeDir="false" afterPath="$PROJECT_DIR$/grids3comparisons.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gridsComparisons_t.py" beforeDir="false" afterPath="$PROJECT_DIR$/gridsComparisons_t.py" afterDir="false" />
-    </list>
+    <list default="true" id="606f4fd7-5b1b-4240-944b-599649288f49" name="Default" comment="grid comparisons" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +102,7 @@
         <entry file="file://$PROJECT_DIR$/gridComp1_temp6_year.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="257">
-              <caret line="427" column="81" lean-forward="true" selection-start-line="427" selection-start-column="81" selection-end-line="427" selection-end-column="122" />
+              <caret line="427" column="81" selection-start-line="427" selection-start-column="81" selection-end-line="427" selection-end-column="122" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -125,7 +114,7 @@
         <entry file="file://$PROJECT_DIR$/gridComp3_temp6_year.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1660">
-              <caret line="154" column="25" lean-forward="true" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
+              <caret line="154" column="25" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -136,7 +125,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/grid3Comparisons_t.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
+            <state relative-caret-position="2219">
               <caret line="208" column="189" selection-start-line="208" selection-start-column="189" selection-end-line="208" selection-end-column="189" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
@@ -189,6 +178,7 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="MERGE" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="PUSH_TAGS">
@@ -395,11 +385,11 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.grid3Comparisons_t" />
+      <item itemvalue="Python.gridComp1_temp3_year" />
       <item itemvalue="Python.grids3comparisons" />
       <item itemvalue="Python.gridsComparisons" />
-      <item itemvalue="Python.gridComp1_temp3_year" />
       <item itemvalue="Python.gridsComparisons_t" />
-      <item itemvalue="Python.grid3Comparisons_t" />
     </list>
     <recent_temporary>
       <list>
@@ -429,7 +419,7 @@
       <workItem from="1545997399082" duration="289000" />
       <workItem from="1545997967059" duration="199000" />
       <workItem from="1546507512160" duration="79112000" />
-      <workItem from="1547458811675" duration="161283000" />
+      <workItem from="1547458811675" duration="161524000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1543181523694</created>
@@ -578,11 +568,18 @@
       <option name="project" value="LOCAL" />
       <updated>1548500375429</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="grid comparisons">
+      <created>1548594954445</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1548594954445</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="325400000" />
+    <option name="totallyTimeSpent" value="325641000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -595,7 +592,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="409" y="23" width="1369" height="1002" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.13258786" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -981,7 +977,7 @@
     <entry file="file://$PROJECT_DIR$/gridComp1_temp6_year.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="257">
-          <caret line="427" column="81" lean-forward="true" selection-start-line="427" selection-start-column="81" selection-end-line="427" selection-end-column="122" />
+          <caret line="427" column="81" selection-start-line="427" selection-start-column="81" selection-end-line="427" selection-end-column="122" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
@@ -1011,7 +1007,7 @@
     <entry file="file://$PROJECT_DIR$/gridComp3_temp6_year.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1660">
-          <caret line="154" column="25" lean-forward="true" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
+          <caret line="154" column="25" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
@@ -1030,7 +1026,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grid3Comparisons_t.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
+        <state relative-caret-position="2219">
           <caret line="208" column="189" selection-start-line="208" selection-start-column="189" selection-end-line="208" selection-end-column="189" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
