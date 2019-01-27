@@ -1,6 +1,6 @@
 import mysql.connector
 import re
-
+import os
 
 # database connection
 def dbConnection():
@@ -22,10 +22,27 @@ def finish(mydb, mycursor):
     mycursor.close()
     mydb.close()
 
+def removeDsStore(directory):
+    if os.path.exists(directory + "/.DS_Store"):
+        os.remove(directory + "/.DS_Store")
+
+def getVerifiedFlickr(common_name):
+    verified_ids_list = []
+    removeDsStore('Flickr_Images')
+    for common_name in os.listdir('Flickr_Images'):
+        for image in os.listdir('Flickr_Images/' +common_name):
+            if image.endswith("_bird.jpg") or image.endswith("_fn.jpg"):
+                #print "image: ",image
+                verified_id = image.replace("_bird.jpg","").replace("_fn.jpg", "")
+                verified_ids_list.append(verified_id)
+
+    verified_ids = str(verified_ids_list).replace("[","(").replace("]",")")
+    return verified_ids
+
 
 # get the number of records for a specific species on flickr
-def getCountFlickr(mycursor):
-    query = "SELECT Count(id) FROM flickr_adder"
+def getCountFlickr(mycursor,verified_ids,common_name):
+    query = 'SELECT Count(id) FROM flickr_data where common_name = "' + common_name + '"and id in ' + verified_ids + ';'
     mycursor.execute(query)
     flickrCount = str(mycursor.fetchone())
     flickrCount = re.search(r'\d+', flickrCount)
@@ -34,8 +51,8 @@ def getCountFlickr(mycursor):
 
 
 # get the number of records for a specific species on nbn
-def getCountNBN(mycursor):
-    query = "SELECT Count(id) FROM nbn_adder"
+def getCountNBN(mycursor,common_name):
+    query = "SELECT Count(id) FROM nbn_data where common_name = '" + common_name + "';"
     mycursor.execute(query)
     nbnCount = str(mycursor.fetchone())
     nbnCount = re.search(r'\d+', nbnCount)
@@ -44,9 +61,9 @@ def getCountNBN(mycursor):
 
 
 # get the coordiantes for all the records of flickr for a species
-def getFlickrCoordinates(mycursor1):
+def getFlickrCoordinates(mycursor1,verified_ids,common_name):
     flickrCoord = []
-    query = "SELECT latitude,longitude,date_time from flickr_adder"
+    query = 'SELECT latitude,longitude,date_time from flickr_data where common_name = "' + common_name + '" and id in ' + verified_ids + ';'
     mycursor1.execute(query)
     flickr_result = mycursor1.fetchall()
     year = 0
@@ -69,9 +86,9 @@ def getFlickrCoordinates(mycursor1):
 
 
 # get the coordiantes for all the records of nbn for a species
-def getNBNCoordinates(mycursor1):
+def getNBNCoordinates(mycursor1,common_name):
     nbnCoord = []
-    query = "SELECT latitude,longitude,year,month from nbn_adder"
+    query = "SELECT latitude,longitude,year,month from nbn_data where common_name = '" + common_name + "';"
     mycursor1.execute(query)
     nbn_result = mycursor1.fetchall()
     for coord in nbn_result:
@@ -225,120 +242,123 @@ def unique(dup_list):
 
 
 def main():
-    mydb, mycursor = dbConnection()
-    flickrCount = getCountFlickr(mycursor)
-    nbnCount = getCountNBN(mycursor)
-    finish(mydb, mycursor)
+    names = ['Blackbird', 'Blue Tit', 'Continental Robin', 'Woodpigeon', 'Dunnock', 'Great Tit', 'Chaffinch','House Sparrow', 'Collared Dove', 'Greenfinch']
+    for common_name in names:
+        verified_ids = getVerifiedFlickr(common_name)
 
-    mydb1, mycursor1 = dbConnection()
+        mydb, mycursor = dbConnection()
+        flickrCount = getCountFlickr(mycursor, verified_ids, common_name)
+        nbnCount = getCountNBN(mycursor, common_name)
+        finish(mydb, mycursor)
 
-    flickrCoord = getFlickrCoordinates(mycursor1)
-    nbnCoord = getNBNCoordinates(mycursor1)
-    finish(mydb1, mycursor1)
+        mydb1, mycursor1 = dbConnection()
+        flickrCoord = getFlickrCoordinates(mycursor1, verified_ids, common_name)
+        nbnCoord = getNBNCoordinates(mycursor1, common_name)
+        finish(mydb1, mycursor1)
 
-    # set uo the coordinates for the grid
-    lowLat = 49.00
-    highLat = 61.00
-    leftLon = -11.50
-    rightLon = 2.00
+        # set uo the coordinates for the grid
+        lowLat = 49.00
+        highLat = 61.00
+        leftLon = -11.50
+        rightLon = 2.00
 
-    cells = [20,30,40,45,55]
-    cells_l = [5, 10, 15, 25, 35, 50, 60]
+        cells = [5,10,15,20,25,30,35,40,45,50,55,60]
 
-    for c in cells:
-        print "cell size: ", c
-        columnNum = numOfCells(c)
+        for c in cells:
+            print "cell size: ", c
+            print "common name: ",common_name
+            columnNum = numOfCells(c)
 
-        # create the grid
-        lonArray, latArray, lowLat, rowNum = createGrid(columnNum, lowLat, highLat, leftLon, rightLon)
-        #print "lonArray: ", lonArray
-        #print "latArray: ", latArray
-        print "lowLat: ", lowLat
-        rowNum = rowNum - 1
-        print "rowNum: ", rowNum
-        columnNum = columnNum-1
-        print "columnNum: ", columnNum
+            # create the grid
+            lonArray, latArray, lowLat, rowNum = createGrid(columnNum, lowLat, highLat, leftLon, rightLon)
+            #print "lonArray: ", lonArray
+            #print "latArray: ", latArray
+            print "lowLat: ", lowLat
+            rowNum = rowNum - 1
+            print "rowNum: ", rowNum
+            columnNum = columnNum-1
+            print "columnNum: ", columnNum
 
 
-        all_ids = []
-        flickr_result = []
-        nbn_result = []
+            all_ids = []
+            flickr_result = []
+            nbn_result = []
 
-        # for each cell, get its coordinates, check if there are any flickr or nbn occcurences in this cell
-        for i in range(0, (rowNum * columnNum) - 1):
-            getCellLat, getCellLon = getCellByID(latArray, lonArray, i, rowNum)
-            getFlickrCells(getCellLat, getCellLon, i, flickrCoord, flickr_result)
-            getNBNCells(getCellLat, getCellLon, i, nbnCoord, nbn_result)
-            all_ids.append(i)
+            # for each cell, get its coordinates, check if there are any flickr or nbn occcurences in this cell
+            for i in range(0, (rowNum * columnNum) - 1):
+                getCellLat, getCellLon = getCellByID(latArray, lonArray, i, rowNum)
+                getFlickrCells(getCellLat, getCellLon, i, flickrCoord, flickr_result)
+                getNBNCells(getCellLat, getCellLon, i, nbnCoord, nbn_result)
+                all_ids.append(i)
 
-        flickr_result = unique(flickr_result)
-        nbn_result = unique(nbn_result)
-        all_ids_months = []
-        for id in all_ids:
-            all_ids_months.append([id, 1, 0])
-            all_ids_months.append([id, 2, 0])
-            all_ids_months.append([id, 1, 1])
-            all_ids_months.append([id, 2, 1])
+            flickr_result = unique(flickr_result)
+            nbn_result = unique(nbn_result)
+            all_ids_months = []
+            for id in all_ids:
+                all_ids_months.append([id, 1, 0])
+                all_ids_months.append([id, 2, 0])
+                all_ids_months.append([id, 1, 1])
+                all_ids_months.append([id, 2, 1])
 
-        new_nbn = []
-        for item in all_ids_months:
-            if item in nbn_result:
-                # print "item: ",item
-                new_nbn.append(item)
-            else:
-                new_item = str(item[:2]).replace("[", "").replace("]", "")
-                new_item = new_item + ", 0"
-                array_items = new_item.split(",")
-                ar1_item = int(array_items[0].strip())
-                ar2_item = int(array_items[1].strip())
-                ar3_item = int(array_items[2].strip())
-                new_item_l = [ar1_item, ar2_item,ar3_item]
-                # print "new_item_l: ",new_item_l
-                new_nbn.append(new_item_l)
+            new_nbn = []
+            for item in all_ids_months:
+                if item in nbn_result:
+                    # print "item: ",item
+                    new_nbn.append(item)
+                else:
+                    new_item = str(item[:2]).replace("[", "").replace("]", "")
+                    new_item = new_item + ", 0"
+                    array_items = new_item.split(",")
+                    ar1_item = int(array_items[0].strip())
+                    ar2_item = int(array_items[1].strip())
+                    ar3_item = int(array_items[2].strip())
+                    new_item_l = [ar1_item, ar2_item,ar3_item]
+                    # print "new_item_l: ",new_item_l
+                    new_nbn.append(new_item_l)
 
-        new_flickr = []
-        for item_1 in all_ids_months:
-            if item_1 in flickr_result:
-                # print "item_1: ",item_1
-                new_flickr.append(item_1)
-            else:
-                new_item_1 = str(item_1[:2]).replace("[", "").replace("]", "")
-                new_item_1 = new_item_1 + ", 0"
-                array_items_1 = new_item_1.split(",")
-                ar1_item_1 = int(array_items_1[0].strip())
-                ar2_item_1 = int(array_items_1[1].strip())
-                ar3_item_1 = int(array_items[2].strip())
-                new_item_l_1 = [ar1_item_1, ar2_item_1,ar3_item_1]
-                # print "new_item_l_1: ", new_item_l_1
-                new_flickr.append(new_item_l_1)
+            new_flickr = []
+            for item_1 in all_ids_months:
+                if item_1 in flickr_result:
+                    # print "item_1: ",item_1
+                    new_flickr.append(item_1)
+                else:
+                    new_item_1 = str(item_1[:2]).replace("[", "").replace("]", "")
+                    new_item_1 = new_item_1 + ", 0"
+                    array_items_1 = new_item_1.split(",")
+                    ar1_item_1 = int(array_items_1[0].strip())
+                    ar2_item_1 = int(array_items_1[1].strip())
+                    ar3_item_1 = int(array_items[2].strip())
+                    new_item_l_1 = [ar1_item_1, ar2_item_1,ar3_item_1]
+                    # print "new_item_l_1: ", new_item_l_1
+                    new_flickr.append(new_item_l_1)
 
-        print "flickr len: ", len(new_flickr)
-        print "nbn len: ", len(new_nbn)
+            print "flickr len: ", len(new_flickr)
+            print "nbn len: ", len(new_nbn)
 
-        for f_pl in new_flickr:
-            print f_pl
+            for f_pl in new_flickr:
+                print f_pl
 
-        truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(new_flickr, new_nbn)
+            truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(new_flickr, new_nbn)
 
-        print "tp: ", truePositive
-        print "tn: ", trueNegative
-        print "fp: ", falsePositive
-        print "fn: ", falseNegative
-        print "total: ", total
+            print "tp: ", truePositive
+            print "tn: ", trueNegative
+            print "fp: ", falsePositive
+            print "fn: ", falseNegative
+            print "total: ", total
 
-        precision = float(truePositive) / (falsePositive + truePositive)
-        recall = float(truePositive) / (truePositive + falseNegative)
-        accuracy = (truePositive + trueNegative) / float(total)
-        f1 = 2 * ((precision * recall) / (precision + recall))
-        print "precision: ", precision
-        print "recall: ", recall
-        print "accuracy: ", accuracy
-        print "f1 measure: ", f1
+            precision = float(truePositive) / (falsePositive + truePositive)
+            recall = float(truePositive) / (truePositive + falseNegative)
+            accuracy = (truePositive + trueNegative) / float(total)
+            f1 = 2 * ((precision * recall) / (precision + recall))
+            print "precision: ", precision
+            print "recall: ", recall
+            print "accuracy: ", accuracy
+            print "f1 measure: ", f1
 
-        newline = "Adder," + str(nbnCount) + "," + str(flickrCount) + ",800," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
-        with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_temp6months.csv', 'a') as f:
-            f.write(newline + '\n')
-            newline = ""
+            newline = str(common_name)+"," + str(nbnCount) + "," + str(flickrCount) + ",800," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
+            with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_all_temporal_1x1_6months.csv', 'a') as f:
+                f.write(newline + '\n')
+                newline = ""
 
 
 if __name__ == '__main__':

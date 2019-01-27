@@ -1,5 +1,6 @@
 import mysql.connector
 import re
+import os
 
 
 
@@ -40,8 +41,8 @@ def getVerifiedFlickr(common_name):
     return verified_ids
 
 #get the number of records for a specific species on flickr
-def getCountFlickr(mycursor):
-    query = "SELECT Count(id) FROM flickr_adder"
+def getCountFlickr(mycursor,verified_ids,common_name):
+    query = 'SELECT Count(id) FROM flickr_data where common_name = "' + common_name + '"and id in ' + verified_ids + ';'
     mycursor.execute(query)
     flickrCount = str(mycursor.fetchone())
     flickrCount = re.search(r'\d+', flickrCount)
@@ -49,8 +50,8 @@ def getCountFlickr(mycursor):
     return int(flickrCount)
 
 #get the number of records for a specific species on nbn
-def getCountNBN(mycursor):
-    query = "SELECT Count(id) FROM nbn_adder"
+def getCountNBN(mycursor,common_name):
+    query = "SELECT Count(id) FROM nbn_data where common_name = '" + common_name + "';"
     mycursor.execute(query)
     nbnCount = str(mycursor.fetchone())
     nbnCount = re.search(r'\d+', nbnCount)
@@ -58,9 +59,9 @@ def getCountNBN(mycursor):
     return int(nbnCount)
 
 #get the coordiantes for all the records of flickr for a species
-def getFlickrCoordinates(mycursor1):
+def getFlickrCoordinates(mycursor1,verified_ids,common_name):
     flickrCoord = []
-    query = "SELECT latitude,longitude from flickr_adder"
+    query = 'SELECT latitude,longitude from flickr_data where common_name = "' + common_name + '" and id in ' + verified_ids + ';'
     mycursor1.execute(query)
     flickr_result = mycursor1.fetchall()
     for coord in flickr_result:
@@ -70,9 +71,9 @@ def getFlickrCoordinates(mycursor1):
     return flickrCoord
 
 #get the coordiantes for all the records of nbn for a species
-def getNBNCoordinates(mycursor1):
+def getNBNCoordinates(mycursor1,common_name):
     nbnCoord = []
-    query = "SELECT latitude,longitude from nbn_adder"
+    query = "SELECT latitude,longitude from nbn_data where common_name = '" + common_name + "';"
     mycursor1.execute(query)
     nbn_result = mycursor1.fetchall()
     for coord in nbn_result:
@@ -203,109 +204,111 @@ def confusionMatrix(flickr_extended, nbn_extended,columnNum):
 
 
 def main():
-    mydb, mycursor = dbConnection()
-    flickrCount = getCountFlickr(mycursor)
-    nbnCount = getCountNBN(mycursor)
-    finish(mydb, mycursor)
+    #names = ['Blackbird','Blue Tit', 'Continental Robin', 'Woodpigeon', 'Dunnock', 'Great Tit', 'Chaffinch', 'House Sparrow','Collared Dove', 'Greenfinch']
+    names = ['Chaffinch','House Sparrow', 'Collared Dove', 'Greenfinch']
+    for common_name in names:
+        verified_ids = getVerifiedFlickr(common_name)
 
-    mydb1, mycursor1 = dbConnection()
-    flickrCoord = getFlickrCoordinates(mycursor1)
-    nbnCoord = getNBNCoordinates(mycursor1)
-    finish(mydb1, mycursor1)
+        mydb, mycursor = dbConnection()
+        flickrCount = getCountFlickr(mycursor, verified_ids, common_name)
+        nbnCount = getCountNBN(mycursor, common_name)
+        finish(mydb, mycursor)
 
-    # set uo the coordinates for the grid
-    lowLat = 49.00
-    highLat = 61.00
-    leftLon = -11.50
-    rightLon = 2.00
+        mydb1, mycursor1 = dbConnection()
+        flickrCoord = getFlickrCoordinates(mycursor1, verified_ids, common_name)
+        nbnCoord = getNBNCoordinates(mycursor1, common_name)
+        finish(mydb1, mycursor1)
 
-    #cells = [5, 10, 15, 25, 35, 50, 60]
-    cells = [20, 30, 40, 45, 55]
+        # set up the coordinates for the grid
+        lowLat = 49.00
+        highLat = 61.00
+        leftLon = -11.50
+        rightLon = 2.00
 
-    for c in cells:
-        print "-----------------------------------------------------------------------------------------"
-        columnNum = numOfCells(c)
-
-
-        # create the grid
-        lonArray, latArray, lowLat, rowNum = createGrid(columnNum, lowLat, highLat, leftLon, rightLon)
-        print "lonArray: ",lonArray
-        print "latArray: ",latArray
-        print "lowLat: ",lowLat
-        rowNum = rowNum - 1
-        print "rowNum: ",rowNum
-        columnNum = columnNum - 1
-        print "columnNum: ",columnNum
-        print c
-        flickr_extended = []
-        nbn_extended = []
-        all_ids = []
-        flickr_result = []
-        nbn_result = []
-        #for each cell, get its coordinates, check if there are any flickr or nbn occcurences in this cell
-        for i in range(0, (rowNum * columnNum)-1):
-            getCellLat, getCellLon = getCellByID(latArray, lonArray, i, rowNum)
-            getFlickrCells(getCellLat, getCellLon,i,flickrCoord,flickr_result)
-            getNBNCells(getCellLat, getCellLon, i, nbnCoord,nbn_result)
-            all_ids.append(i)
+        cells = [5, 10, 15,20,25,30,35,40,45, 50,55, 60]
 
 
-
-        first_row_ids = []
-        last_row_ids = []
-        first_col_ids = []
-        last_col_ids = []
-        for first_row in range(0,columnNum):
-            first_row_ids.append(first_row)
-
-        for last_row in range((rowNum * columnNum) - 18,(rowNum * columnNum) - 1):
-            last_row_ids.append(last_row)
-
-        for first_col in range(0,(rowNum * columnNum) - 15,columnNum):
-            first_col_ids.append(first_col)
-
-        for last_col in range(columnNum-1,(rowNum * columnNum),columnNum):
-            last_col_ids.append(last_col)
+        for c in cells:
+            print "-----------------------------------------------------------------------------------------"
+            columnNum = numOfCells(c)
 
 
-        for res in all_ids:
-            if res in flickr_result:
-                flickr_extended.append([res,1])
-            else:
-                flickr_extended.append([res, 0])
-
-        for res_1 in all_ids:
-            if res_1 in nbn_result:
-                nbn_extended.append([res_1,1])
-            else:
-                nbn_extended.append([res_1, 0])
-
-        print "len flickr: ",len(flickr_extended)
-        print "nbn len: ", len(nbn_extended)
-        truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(flickr_extended, nbn_extended,columnNum)
-
-
-        print "tp: ",truePositive
-        print "tn: ",trueNegative
-        print "fp: ",falsePositive
-        print "fn: ",falseNegative
+            # create the grid
+            lonArray, latArray, lowLat, rowNum = createGrid(columnNum, lowLat, highLat, leftLon, rightLon)
+            rowNum = rowNum - 1
+            print "rowNum: ",rowNum
+            columnNum = columnNum - 1
+            print "columnNum: ",columnNum
+            print c
+            flickr_extended = []
+            nbn_extended = []
+            all_ids = []
+            flickr_result = []
+            nbn_result = []
+            #for each cell, get its coordinates, check if there are any flickr or nbn occcurences in this cell
+            for i in range(0, (rowNum * columnNum)-1):
+                getCellLat, getCellLon = getCellByID(latArray, lonArray, i, rowNum)
+                getFlickrCells(getCellLat, getCellLon,i,flickrCoord,flickr_result)
+                getNBNCells(getCellLat, getCellLon, i, nbnCoord,nbn_result)
+                all_ids.append(i)
 
 
+            '''
+            first_row_ids = []
+            last_row_ids = []
+            first_col_ids = []
+            last_col_ids = []
+            for first_row in range(0,columnNum):
+                first_row_ids.append(first_row)
 
-        precision = float(truePositive) / (falsePositive + truePositive)
-        recall = float(truePositive) / (truePositive + falseNegative)
-        accuracy = (truePositive + trueNegative) / float(total)
-        f1 = 2 * ((precision * recall) / (precision + recall))
-        print "precision: ", precision
-        print "recall: ", recall
-        print "accuracy: ", accuracy
-        print "f1 measure: ", f1
+            for last_row in range((rowNum * columnNum) - 18,(rowNum * columnNum) - 1):
+                last_row_ids.append(last_row)
+
+            for first_col in range(0,(rowNum * columnNum) - 15,columnNum):
+                first_col_ids.append(first_col)
+
+            for last_col in range(columnNum-1,(rowNum * columnNum),columnNum):
+                last_col_ids.append(last_col)
+            '''
+
+            for res in all_ids:
+                if res in flickr_result:
+                    flickr_extended.append([res,1])
+                else:
+                    flickr_extended.append([res, 0])
+
+            for res_1 in all_ids:
+                if res_1 in nbn_result:
+                    nbn_extended.append([res_1,1])
+                else:
+                    nbn_extended.append([res_1, 0])
+
+            print "len flickr: ",len(flickr_extended)
+            print "nbn len: ", len(nbn_extended)
+            truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(flickr_extended, nbn_extended,columnNum)
 
 
-        newline = "Adder," + str(nbnCount) + "," + str(flickrCount) + "," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
-        with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_Adder_3x3_new.csv', 'a') as f:
-            f.write(newline + '\n')
-            newline = ""
+            print "tp: ",truePositive
+            print "tn: ",trueNegative
+            print "fp: ",falsePositive
+            print "fn: ",falseNegative
+
+
+
+            precision = float(truePositive) / (falsePositive + truePositive)
+            recall = float(truePositive) / (truePositive + falseNegative)
+            accuracy = (truePositive + trueNegative) / float(total)
+            f1 = 2 * ((precision * recall) / (precision + recall))
+            print "precision: ", precision
+            print "recall: ", recall
+            print "accuracy: ", accuracy
+            print "f1 measure: ", f1
+
+
+            newline = str(common_name)+"," + str(nbnCount) + "," + str(flickrCount) + "," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
+            with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_all_spatial_3x3.csv', 'a') as f:
+                f.write(newline + '\n')
+                newline = ""
 
 
 

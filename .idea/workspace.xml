@@ -2,14 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="606f4fd7-5b1b-4240-944b-599649288f49" name="Default" comment="grid comparisons">
-      <change afterPath="$PROJECT_DIR$/grid3Comparisons_t6.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gridComparisons_t6.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gridComp1_temp3_year.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gridComp1_temp6_year.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gridComp3_temp3_year.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gridComp3_temp6_year.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grid3Comparisons_t.py" beforeDir="false" afterPath="$PROJECT_DIR$/grid3Comparisons_t.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grid3Comparisons_t6.py" beforeDir="false" afterPath="$PROJECT_DIR$/grid3Comparisons_t6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gridComparisons_t6.py" beforeDir="false" afterPath="$PROJECT_DIR$/gridComparisons_t6.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grids3comparisons.py" beforeDir="false" afterPath="$PROJECT_DIR$/grids3comparisons.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gridsComparisons.py" beforeDir="false" afterPath="$PROJECT_DIR$/gridsComparisons.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gridsComparisons_t.py" beforeDir="false" afterPath="$PROJECT_DIR$/gridsComparisons_t.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new_efficiency_grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/new_efficiency_grid.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,28 +22,29 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/persistence_landscapes$gridComparisons_t6.coverage" NAME="gridComparisons_t6 Coverage Results" MODIFIED="1548359076234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$statistics_generator.coverage" NAME="statistics_generator Coverage Results" MODIFIED="1547916509171" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$download_verify_images.coverage" NAME="download_verify_images Coverage Results" MODIFIED="1547641476946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$verificationImages.coverage" NAME="verificationImages Coverage Results" MODIFIED="1547926283518" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$gridsComparisons.coverage" NAME="gridsComparisons Coverage Results" MODIFIED="1548449207554" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$compareFlickrNBN_t.coverage" NAME="compareFlickrNBN_t Coverage Results" MODIFIED="1547113213145" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$grid3Comparisons_t6.coverage" NAME="grid3Comparisons_t6 Coverage Results" MODIFIED="1548419127931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$gridComp1_temp3_year.coverage" NAME="gridComp1_temp3_year Coverage Results" MODIFIED="1548509400024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$verify.coverage" NAME="verify Coverage Results" MODIFIED="1547145311217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$verifyImages.coverage" NAME="verifyImages Coverage Results" MODIFIED="1544199539706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$mappingClasses1.coverage" NAME="mappingClasses1 Coverage Results" MODIFIED="1543854039965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$dbConnection.coverage" NAME="dbConnection Coverage Results" MODIFIED="1543854009772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$grids3comparisons.coverage" NAME="grids3comparisons Coverage Results" MODIFIED="1548360635684" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$grids3comparisons.coverage" NAME="grids3comparisons Coverage Results" MODIFIED="1548521355068" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$image_download.coverage" NAME="image_download Coverage Results" MODIFIED="1544193274816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$gridsComparisons_t.coverage" NAME="gridsComparisons_t Coverage Results" MODIFIED="1548533113625" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$nbn_names.coverage" NAME="nbn_names Coverage Results" MODIFIED="1546519917596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$compareFlickrNBN1.coverage" NAME="compareFlickrNBN1 Coverage Results" MODIFIED="1547111044944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$download_verify_images.coverage" NAME="download_verify_images Coverage Results" MODIFIED="1547641476946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$flickr_overall.coverage" NAME="flickr_overall Coverage Results" MODIFIED="1546532036635" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$new_efficiency_grid.coverage" NAME="new_efficiency_grid Coverage Results" MODIFIED="1548344393696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$compareFlickrNBN.coverage" NAME="compareFlickrNBN Coverage Results" MODIFIED="1547160112168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$gridsComparisons_t.coverage" NAME="gridsComparisons_t Coverage Results" MODIFIED="1548345527527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$test.coverage" NAME="test Coverage Results" MODIFIED="1543182824981" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$nbn_names.coverage" NAME="nbn_names Coverage Results" MODIFIED="1546519917596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$main.coverage" NAME="main Coverage Results" MODIFIED="1543182431121" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$new_statistics.coverage" NAME="new_statistics Coverage Results" MODIFIED="1547986620122" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/persistence_landscapes$verifyTop10.coverage" NAME="verifyTop10 Coverage Results" MODIFIED="1548180360762" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$grid3Comparisons_t.coverage" NAME="grid3Comparisons_t Coverage Results" MODIFIED="1548347759320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/persistence_landscapes$compareFlickrNBN1.coverage" NAME="compareFlickrNBN1 Coverage Results" MODIFIED="1547111044944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/persistence_landscapes$grid3Comparisons_t.coverage" NAME="grid3Comparisons_t Coverage Results" MODIFIED="1548594863225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -83,22 +86,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/verificationImages.py">
+        <entry file="file://$PROJECT_DIR$/grids3comparisons.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1076">
-              <caret line="117" column="5" selection-start-line="117" selection-start-column="5" selection-end-line="117" selection-end-column="42" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/verifyTop10.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="139">
-              <caret line="57" selection-start-line="57" selection-end-line="59" selection-end-column="43" />
+            <state relative-caret-position="-262">
+              <caret line="207" column="25" selection-start-line="207" selection-start-column="25" selection-end-line="207" selection-end-column="25" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -107,34 +98,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gridsComparisons_t.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="248" column="4" selection-start-line="248" selection-start-column="4" selection-end-line="248" selection-end-column="28" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gridComparisons_t6.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1153">
-              <caret line="244" column="9" lean-forward="true" selection-start-line="244" selection-start-column="9" selection-end-line="244" selection-end-column="9" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grid3Comparisons_t.py">
+        <entry file="file://$PROJECT_DIR$/gridComp3_temp3_year.py">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret lean-forward="true" selection-end-line="352" selection-end-column="10" />
+              <caret selection-end-line="468" selection-end-column="10" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -143,10 +110,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grid3Comparisons_t6.py">
+        <entry file="file://$PROJECT_DIR$/gridComp1_temp6_year.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="240" column="33" lean-forward="true" selection-start-line="240" selection-start-column="33" selection-end-line="240" selection-end-column="33" />
+            <state relative-caret-position="257">
+              <caret line="427" column="81" lean-forward="true" selection-start-line="427" selection-start-column="81" selection-end-line="427" selection-end-column="122" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gridComp3_temp6_year.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1660">
+              <caret line="154" column="25" lean-forward="true" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -155,22 +134,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/grids3comparisons.py">
+        <entry file="file://$PROJECT_DIR$/grid3Comparisons_t.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
-              <folding>
-                <element signature="e#0#22#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gridsComparisons.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="25" selection-start-line="25" selection-end-line="40" selection-end-column="23" />
+            <state relative-caret-position="112">
+              <caret line="208" column="189" selection-start-line="208" selection-start-column="189" selection-end-line="208" selection-end-column="189" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -215,10 +182,10 @@
       <find>6438913219</find>
       <find>Blackbird</find>
       <find>flickr</find>
-      <find>place_id</find>
-      <find>uid</find>
       <find>_tn.jpg</find>
+      <find>place_id</find>
       <find>monthList</find>
+      <find>uid</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -255,18 +222,22 @@
         <option value="$PROJECT_DIR$/new_statistics.py" />
         <option value="$PROJECT_DIR$/verifyTop10.py" />
         <option value="$PROJECT_DIR$/new_efficiency_grid.py" />
+        <option value="$PROJECT_DIR$/gridsComparisons.py" />
         <option value="$PROJECT_DIR$/gridsComparisons_t.py" />
         <option value="$PROJECT_DIR$/gridComparisons_t6.py" />
-        <option value="$PROJECT_DIR$/grid3Comparisons_t.py" />
         <option value="$PROJECT_DIR$/grid3Comparisons_t6.py" />
-        <option value="$PROJECT_DIR$/gridsComparisons.py" />
+        <option value="$PROJECT_DIR$/gridComp1_temp3_year.py" />
+        <option value="$PROJECT_DIR$/gridComp1_temp6_year.py" />
+        <option value="$PROJECT_DIR$/gridComp3_temp3_year.py" />
+        <option value="$PROJECT_DIR$/gridComp3_temp6_year.py" />
         <option value="$PROJECT_DIR$/grids3comparisons.py" />
+        <option value="$PROJECT_DIR$/grid3Comparisons_t.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="154" />
-    <option name="y" value="85" />
+    <option name="x" value="409" />
+    <option name="y" value="23" />
     <option name="width" value="1369" />
     <option name="height" value="1002" />
   </component>
@@ -312,7 +283,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.gridsComparisons">
+  <component name="RunManager" selected="Python.grid3Comparisons_t">
     <configuration name="grid3Comparisons_t" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="persistence-landscapes" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -335,7 +306,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="grid3Comparisons_t6" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="gridComp1_temp3_year" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="persistence-landscapes" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -348,29 +319,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grid3Comparisons_t6.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="gridComparisons_t6" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="persistence-landscapes" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gridComparisons_t6.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gridComp1_temp3_year.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -423,20 +372,42 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="gridsComparisons_t" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="persistence-landscapes" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gridsComparisons_t.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.grids3comparisons" />
-      <item itemvalue="Python.grid3Comparisons_t" />
-      <item itemvalue="Python.gridComparisons_t6" />
-      <item itemvalue="Python.grid3Comparisons_t6" />
       <item itemvalue="Python.gridsComparisons" />
+      <item itemvalue="Python.gridComp1_temp3_year" />
+      <item itemvalue="Python.gridsComparisons_t" />
+      <item itemvalue="Python.grid3Comparisons_t" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.gridsComparisons" />
-        <item itemvalue="Python.grid3Comparisons_t6" />
-        <item itemvalue="Python.grids3comparisons" />
-        <item itemvalue="Python.gridComparisons_t6" />
         <item itemvalue="Python.grid3Comparisons_t" />
+        <item itemvalue="Python.gridsComparisons_t" />
+        <item itemvalue="Python.grids3comparisons" />
+        <item itemvalue="Python.gridComp1_temp3_year" />
+        <item itemvalue="Python.gridsComparisons" />
       </list>
     </recent_temporary>
   </component>
@@ -458,7 +429,7 @@
       <workItem from="1545997399082" duration="289000" />
       <workItem from="1545997967059" duration="199000" />
       <workItem from="1546507512160" duration="79112000" />
-      <workItem from="1547458811675" duration="146547000" />
+      <workItem from="1547458811675" duration="161283000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1543181523694</created>
@@ -600,11 +571,18 @@
       <option name="project" value="LOCAL" />
       <updated>1548344278179</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="grid comparisons">
+      <created>1548500375429</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1548500375429</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="310664000" />
+    <option name="totallyTimeSpent" value="325400000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -616,7 +594,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="154" y="85" width="1369" height="1002" extended-state="0" />
+    <frame x="409" y="23" width="1369" height="1002" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.13258786" />
@@ -866,40 +844,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/compareFlickrNBN1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="78" column="30" selection-start-line="78" selection-start-column="30" selection-end-line="78" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/flickr_years_count_all.csv">
       <provider selected="true" editor-type-id="csv-text-editor" />
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" rowLines="3" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flickr_overall.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="71" column="23" lean-forward="true" selection-start-line="58" selection-start-column="8" selection-end-line="71" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mappingClasses_t.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-662">
           <caret line="61" column="25" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/compareFlickrNBN_t.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="58" column="50" lean-forward="true" selection-start-line="58" selection-start-column="50" selection-end-line="58" selection-end-column="50" />
         </state>
       </provider>
     </entry>
@@ -920,40 +874,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gridsComparisons_t.py">
+    <entry file="file://$PROJECT_DIR$/new_statistics.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="248" column="4" selection-start-line="248" selection-start-column="4" selection-end-line="248" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mappingClasses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3">
-          <caret line="142" column="23" selection-start-line="142" selection-start-column="23" selection-end-line="143" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#40#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gridComparisons_t6.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1153">
-          <caret line="244" column="9" lean-forward="true" selection-start-line="244" selection-start-column="9" selection-end-line="244" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grid3Comparisons_t.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" selection-end-line="352" selection-end-column="10" />
+        <state relative-caret-position="257">
+          <caret line="95" column="39" selection-start-line="95" selection-start-column="39" selection-end-line="95" selection-end-column="39" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
@@ -962,18 +886,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grid3Comparisons_t6.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="240" column="33" lean-forward="true" selection-start-line="240" selection-start-column="33" selection-end-line="240" selection-end-column="33" />
+        <state relative-caret-position="242">
+          <caret line="352" column="117" selection-start-line="352" selection-start-column="117" selection-end-line="352" selection-end-column="117" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/new_statistics.py">
+    <entry file="file://$PROJECT_DIR$/verifyTop10.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="95" column="39" selection-start-line="95" selection-start-column="39" selection-end-line="95" selection-end-column="39" />
+        <state relative-caret-position="139">
+          <caret line="57" selection-start-line="57" selection-end-line="59" selection-end-column="43" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
@@ -990,10 +914,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/verifyTop10.py">
+    <entry file="file://$PROJECT_DIR$/compareFlickrNBN1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="57" selection-start-line="57" selection-end-line="59" selection-end-column="43" />
+        <state relative-caret-position="624">
+          <caret line="78" column="30" selection-start-line="78" selection-start-column="30" selection-end-line="78" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mappingClasses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1460">
+          <caret line="142" column="23" selection-start-line="142" selection-start-column="23" selection-end-line="143" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flickr_overall.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="69" column="12" lean-forward="true" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compareFlickrNBN_t.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-811">
+          <caret line="6" column="26" lean-forward="true" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gridComparisons_t6.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
@@ -1002,8 +960,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gridsComparisons.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="25" selection-start-line="25" selection-end-line="40" selection-end-column="23" />
+        <state relative-caret-position="90">
+          <caret line="6" selection-start-line="6" selection-end-line="23" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gridComp1_temp3_year.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2203">
+          <caret line="295" column="12" selection-start-line="295" selection-start-column="12" selection-end-line="398" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gridComp1_temp6_year.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="427" column="81" lean-forward="true" selection-start-line="427" selection-start-column="81" selection-end-line="427" selection-end-column="122" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gridComp3_temp3_year.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="468" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gridsComparisons_t.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="326" column="21" lean-forward="true" selection-start-line="326" selection-start-column="21" selection-end-line="326" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gridComp3_temp6_year.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1660">
+          <caret line="154" column="25" lean-forward="true" selection-start-line="154" selection-start-column="25" selection-end-line="154" selection-end-column="25" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
@@ -1012,8 +1020,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grids3comparisons.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="39" column="23" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+        <state relative-caret-position="-262">
+          <caret line="207" column="25" selection-start-line="207" selection-start-column="25" selection-end-line="207" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grid3Comparisons_t.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="208" column="189" selection-start-line="208" selection-start-column="189" selection-end-line="208" selection-end-column="189" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>

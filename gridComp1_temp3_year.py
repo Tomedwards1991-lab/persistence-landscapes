@@ -53,7 +53,7 @@ def getCountFlickr(mycursor,verified_ids,common_name):
 
 # get the number of records for a specific species on nbn
 def getCountNBN(mycursor,common_name):
-    query = "SELECT Count(id) FROM nbn_data where common_name = '" + common_name + "';"
+    query = "SELECT Count(id) FROM nbn_data where common_name = '" + common_name + "'and year >= 2004;"
     mycursor.execute(query)
     nbnCount = str(mycursor.fetchone())
     nbnCount = re.search(r'\d+', nbnCount)
@@ -77,19 +77,20 @@ def getFlickrCoordinates(mycursor1,verified_ids,common_name):
         if "/" in date_time[0]:
             date_time[0] = date_time[0].split("/")
             month = int(date_time[0][1])
-
+            year = int(date_time[0][2])
         if "-" in date_time[0]:
             date_time[0] = date_time[0].split("-")
             month = int(date_time[0][1])
+            year = int(date_time[0][2])
 
-        flickrCoord.append([latitude, longitude, month])
+        flickrCoord.append([latitude, longitude,year, month])
     return flickrCoord
 
 
 # get the coordiantes for all the records of nbn for a species
 def getNBNCoordinates(mycursor1,common_name):
     nbnCoord = []
-    query = "SELECT latitude,longitude,year,month from nbn_data where common_name = '" + common_name + "';"
+    query = "SELECT latitude,longitude,year,month from nbn_data where common_name = '" + common_name + "' and year >= 2004;"
     mycursor1.execute(query)
     nbn_result = mycursor1.fetchall()
     for coord in nbn_result:
@@ -97,7 +98,7 @@ def getNBNCoordinates(mycursor1,common_name):
         longitude = float(coord[1])
         year = int(coord[2])
         month = int(coord[3])
-        nbnCoord.append([latitude, longitude, month])
+        nbnCoord.append([latitude, longitude,year, month])
 
     return nbnCoord
 
@@ -168,50 +169,43 @@ def getCellByID(gridLatArray, gridLonArray, squareID, rowNum):
 # check whether there are any flickr occurences in a given cell
 def getFlickrCells(getCellLat, getCellLon, i, flickrCoord, flickr_result):
     monthList = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
+    yearList = [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017]
+
     for f_coord in flickrCoord:
         f_lat = f_coord[0]
         f_lon = f_coord[1]
-        month = f_coord[2]
+        year = f_coord[2]
+        month = f_coord[3]
 
         if getCellLat[1] <= f_lat <= getCellLat[0] and getCellLon[0] <= f_lon <= getCellLon[3]:
-            if month in monthList[0]:
-                flickr_result.append([i, 1, 1])
-            if month in monthList[1]:
-                flickr_result.append([i, 2, 1])
-            if month in monthList[2]:
-                flickr_result.append([i, 3, 1])
 
-        # else:
-        # if month in monthList[0]:
-        # flickr_result.append([i,1,0])
-        # if month in monthList[1]:
-        # flickr_result.append([i,2,0])
-        # if month in monthList[2]:
-        # flickr_result.append([i,3,0])
+                if year in yearList and month in monthList[0]:
+                    flickr_result.append([i,year,1, 1])
+                if year in yearList and month in monthList[1]:
+                    flickr_result.append([i,year,2, 1])
+                if year in yearList and month in monthList[2]:
+                    flickr_result.append([i,year, 3, 1])
+
 
 
 # check whether there are any nbn occurences in a given cell
 def getNBNCells(getCellLat, getCellLon, i, nbnCoord, nbn_result):
     monthList = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
+    yearList = [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017]
+
     for n_coord in nbnCoord:
         n_lat = n_coord[0]
         n_lon = n_coord[1]
-        month = n_coord[2]
+        year = n_coord[2]
+        month = n_coord[3]
 
         if getCellLat[1] <= n_lat <= getCellLat[0] and getCellLon[0] <= n_lon <= getCellLon[3]:
-            if month in monthList[0]:
-                nbn_result.append([i, 1, 1])
-            if month in monthList[1]:
-                nbn_result.append([i, 2, 1])
-            if month in monthList[2]:
-                nbn_result.append([i, 3, 1])
-        # else:
-        # if month in monthList[0]:
-        # nbn_result.append([i, 1, 0])
-        # if month in monthList[1]:
-        # nbn_result.append([i, 2, 0])
-        # if month in monthList[2]:
-        # nbn_result.append([i, 3, 0])
+            if year in yearList and month in monthList[0]:
+                nbn_result.append([i,year,1, 1])
+            if year in yearList and month in monthList[1]:
+                nbn_result.append([i,year, 2, 1])
+            if year in yearList and month in monthList[2]:
+                nbn_result.append([i,year, 3, 1])
 
 
 def confusionMatrix(new_flickr, new_nbn):
@@ -223,16 +217,16 @@ def confusionMatrix(new_flickr, new_nbn):
     falseNegative = 0
 
     for i in range(0, total):
-        if (new_nbn[i][2] != 0 and new_flickr[i][2] != 0 and new_nbn[i][1] == new_flickr[i][1]):
+        if (new_nbn[i][3] != 0 and new_flickr[i][3] != 0 and new_nbn[i][1] == new_flickr[i][1] and new_nbn[i][2] == new_flickr[i][2]):
             truePositive = truePositive + 1
 
-        if (new_nbn[i][2] == 0 and new_flickr[i][2] == 0 and new_nbn[i][1] == new_flickr[i][1]):
+        if (new_nbn[i][3] == 0 and new_flickr[i][3] == 0 and new_nbn[i][1] == new_flickr[i][1] and new_nbn[i][2] == new_flickr[i][2]):
             trueNegative = trueNegative + 1
 
-        if (new_nbn[i][2] != 0 and new_flickr[i][2] == 0 and new_nbn[i][1] == new_flickr[i][1]):
+        if (new_nbn[i][3] != 0 and new_flickr[i][3] == 0 and new_nbn[i][1] == new_flickr[i][1] and new_nbn[i][2] == new_flickr[i][2]):
             falseNegative = falseNegative + 1
 
-        if (new_nbn[i][2] == 0 and new_flickr[i][2] != 0 and new_nbn[i][1] == new_flickr[i][1]):
+        if (new_nbn[i][3] == 0 and new_flickr[i][3] != 0 and new_nbn[i][1] == new_flickr[i][1] and new_nbn[i][2] == new_flickr[i][2]):
             falsePositive = falsePositive + 1
 
     return (truePositive, trueNegative, falsePositive, falseNegative, total)
@@ -248,6 +242,7 @@ def unique(dup_list):
 
 def main():
     names = ['Blackbird','Blue Tit', 'Continental Robin', 'Woodpigeon', 'Dunnock', 'Great Tit', 'Chaffinch', 'House Sparrow','Collared Dove', 'Greenfinch']
+
     for common_name in names:
         verified_ids = getVerifiedFlickr(common_name)
 
@@ -261,7 +256,8 @@ def main():
         nbnCoord = getNBNCoordinates(mycursor1, common_name)
         finish(mydb1, mycursor1)
 
-        # set uo the coordinates for the grid
+
+        # set up the coordinates for the grid
         lowLat = 49.00
         highLat = 61.00
         leftLon = -11.50
@@ -294,14 +290,114 @@ def main():
 
             flickr_result = unique(flickr_result)
             nbn_result = unique(nbn_result)
+
             all_ids_months = []
             for id in all_ids:
-                all_ids_months.append([id, 1, 0])
-                all_ids_months.append([id, 2, 0])
-                all_ids_months.append([id, 3, 0])
-                all_ids_months.append([id, 1, 1])
-                all_ids_months.append([id, 2, 1])
-                all_ids_months.append([id, 3, 1])
+                all_ids_months.append([id, 2004, 1, 0])
+                all_ids_months.append([id, 2004, 2, 0])
+                all_ids_months.append([id, 2004, 3, 0])
+                all_ids_months.append([id, 2004, 1, 1])
+                all_ids_months.append([id, 2004, 2, 1])
+                all_ids_months.append([id, 2004, 3, 1])
+
+                all_ids_months.append([id, 2005, 1, 0])
+                all_ids_months.append([id, 2005, 2, 0])
+                all_ids_months.append([id, 2005, 3, 0])
+                all_ids_months.append([id, 2005, 1, 1])
+                all_ids_months.append([id, 2005, 2, 1])
+                all_ids_months.append([id, 2005, 3, 1])
+
+                all_ids_months.append([id, 2006, 1, 0])
+                all_ids_months.append([id, 2006, 2, 0])
+                all_ids_months.append([id, 2006, 3, 0])
+                all_ids_months.append([id, 2006, 1, 1])
+                all_ids_months.append([id, 2006, 2, 1])
+                all_ids_months.append([id, 2006, 3, 1])
+
+                all_ids_months.append([id, 2007, 1, 0])
+                all_ids_months.append([id, 2007, 2, 0])
+                all_ids_months.append([id, 2007, 3, 0])
+                all_ids_months.append([id, 2007, 1, 1])
+                all_ids_months.append([id, 2007, 2, 1])
+                all_ids_months.append([id, 2007, 3, 1])
+
+                all_ids_months.append([id, 2008, 1, 0])
+                all_ids_months.append([id, 2008, 2, 0])
+                all_ids_months.append([id, 2008, 3, 0])
+                all_ids_months.append([id, 2008, 1, 1])
+                all_ids_months.append([id, 2008, 2, 1])
+                all_ids_months.append([id, 2008, 3, 1])
+
+                all_ids_months.append([id, 2009, 1, 0])
+                all_ids_months.append([id, 2009, 2, 0])
+                all_ids_months.append([id, 2009, 3, 0])
+                all_ids_months.append([id, 2009, 1, 1])
+                all_ids_months.append([id, 2009, 2, 1])
+                all_ids_months.append([id, 2009, 3, 1])
+
+                all_ids_months.append([id, 2010, 1, 0])
+                all_ids_months.append([id, 2010, 2, 0])
+                all_ids_months.append([id, 2010, 3, 0])
+                all_ids_months.append([id, 2010, 1, 1])
+                all_ids_months.append([id, 2010, 2, 1])
+                all_ids_months.append([id, 2010, 3, 1])
+
+                all_ids_months.append([id, 2011, 1, 0])
+                all_ids_months.append([id, 2011, 2, 0])
+                all_ids_months.append([id, 2011, 3, 0])
+                all_ids_months.append([id, 2011, 1, 1])
+                all_ids_months.append([id, 2011, 2, 1])
+                all_ids_months.append([id, 2011, 3, 1])
+
+                all_ids_months.append([id, 2012, 1, 0])
+                all_ids_months.append([id, 2012, 2, 0])
+                all_ids_months.append([id, 2012, 3, 0])
+                all_ids_months.append([id, 2012, 1, 1])
+                all_ids_months.append([id, 2012, 2, 1])
+                all_ids_months.append([id, 2012, 3, 1])
+
+                all_ids_months.append([id, 2013, 1, 0])
+                all_ids_months.append([id, 2013, 2, 0])
+                all_ids_months.append([id, 2013, 3, 0])
+                all_ids_months.append([id, 2013, 1, 1])
+                all_ids_months.append([id, 2013, 2, 1])
+                all_ids_months.append([id, 2013, 3, 1])
+
+                all_ids_months.append([id, 2014, 1, 0])
+                all_ids_months.append([id, 2014, 2, 0])
+                all_ids_months.append([id, 2014, 3, 0])
+                all_ids_months.append([id, 2014, 1, 1])
+                all_ids_months.append([id, 2014, 2, 1])
+                all_ids_months.append([id, 2014, 3, 1])
+
+                all_ids_months.append([id, 2015, 1, 0])
+                all_ids_months.append([id, 2015, 2, 0])
+                all_ids_months.append([id, 2015, 3, 0])
+                all_ids_months.append([id, 2015, 1, 1])
+                all_ids_months.append([id, 2015, 2, 1])
+                all_ids_months.append([id, 2015, 3, 1])
+
+                all_ids_months.append([id, 2016, 1, 0])
+                all_ids_months.append([id, 2016, 2, 0])
+                all_ids_months.append([id, 2016, 3, 0])
+                all_ids_months.append([id, 2016, 1, 1])
+                all_ids_months.append([id, 2016, 2, 1])
+                all_ids_months.append([id, 2016, 3, 1])
+
+                all_ids_months.append([id, 2017, 1, 0])
+                all_ids_months.append([id, 2017, 2, 0])
+                all_ids_months.append([id, 2017, 3, 0])
+                all_ids_months.append([id, 2017, 1, 1])
+                all_ids_months.append([id, 2017, 2, 1])
+                all_ids_months.append([id, 2017, 3, 1])
+
+                all_ids_months.append([id, 2018, 1, 0])
+                all_ids_months.append([id, 2018, 2, 0])
+                all_ids_months.append([id, 2018, 3, 0])
+                all_ids_months.append([id, 2018, 1, 1])
+                all_ids_months.append([id, 2018, 2, 1])
+                all_ids_months.append([id, 2018, 3, 1])
+
 
             new_nbn = []
             for item in all_ids_months:
@@ -309,13 +405,15 @@ def main():
                     # print "item: ",item
                     new_nbn.append(item)
                 else:
-                    new_item = str(item[:2]).replace("[", "").replace("]", "")
+                    new_item = str(item[:3]).replace("[", "").replace("]", "")
                     new_item = new_item + ", 0"
                     array_items = new_item.split(",")
                     ar1_item = int(array_items[0].strip())
                     ar2_item = int(array_items[1].strip())
                     ar3_item = int(array_items[2].strip())
-                    new_item_l = [ar1_item, ar2_item, ar3_item]
+                    ar4_item = int(array_items[3].strip())
+                    
+                    new_item_l = [ar1_item, ar2_item, ar3_item, ar4_item]
                     # print "new_item_l: ",new_item_l
                     new_nbn.append(new_item_l)
 
@@ -325,18 +423,20 @@ def main():
                     # print "item_1: ",item_1
                     new_flickr.append(item_1)
                 else:
-                    new_item_1 = str(item_1[:2]).replace("[", "").replace("]", "")
+                    new_item_1 = str(item_1[:3]).replace("[", "").replace("]", "")
                     new_item_1 = new_item_1 + ", 0"
                     array_items_1 = new_item_1.split(",")
                     ar1_item_1 = int(array_items_1[0].strip())
                     ar2_item_1 = int(array_items_1[1].strip())
                     ar3_item_1 = int(array_items_1[2].strip())
-                    new_item_l_1 = [ar1_item_1, ar2_item_1, ar3_item_1]
+                    ar4_item_1 = int(array_items_1[3].strip())
+                    new_item_l_1 = [ar1_item_1, ar2_item_1, ar3_item_1,ar4_item_1]
                     # print "new_item_l_1: ", new_item_l_1
                     new_flickr.append(new_item_l_1)
 
             print "flickr len: ", len(new_flickr)
             print "nbn len: ", len(new_nbn)
+
 
             truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(new_flickr, new_nbn)
 
@@ -354,12 +454,13 @@ def main():
             print "recall: ", recall
             print "accuracy: ", accuracy
             print "f1 measure: ", f1
-
+            
+            '''
             newline = str(common_name)+"," + str(nbnCount) + "," + str(flickrCount) + ",800," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
-            with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_all_temporal_1x1_3months.csv', 'a') as f:
+            with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_all_temporal_year_1x1_3months.csv', 'a') as f:
                 f.write(newline + '\n')
                 newline = ""
 
-
+            '''
 if __name__ == '__main__':
     main()
