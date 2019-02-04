@@ -241,7 +241,7 @@ def unique(dup_list):
 
 
 def main():
-    names = ['Blackbird','Blue Tit', 'Continental Robin', 'Woodpigeon', 'Dunnock', 'Great Tit', 'Chaffinch', 'House Sparrow','Collared Dove', 'Greenfinch']
+    names = ['Collared Dove', 'Greenfinch']
 
     for common_name in names:
         verified_ids = getVerifiedFlickr(common_name)
@@ -455,12 +455,12 @@ def main():
             print "accuracy: ", accuracy
             print "f1 measure: ", f1
             
-            '''
+
             newline = str(common_name)+"," + str(nbnCount) + "," + str(flickrCount) + ",800," + str(c) + "," + str(truePositive) + "," + str(trueNegative) + "," + str(falsePositive) + "," + str(falseNegative) + "," + str(precision) + "," + str(recall) + "," + str(f1) + "," + str(accuracy)
             with open('/Users/thomasedwards/Desktop/paper_update_report_02_01_18/output_all_temporal_year_1x1_3months.csv', 'a') as f:
                 f.write(newline + '\n')
                 newline = ""
 
-            '''
+
 if __name__ == '__main__':
     main()

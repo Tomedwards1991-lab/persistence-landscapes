@@ -201,8 +201,6 @@ def getNBNCells(getCellLat, getCellLon, i, nbnCoord, nbn_result):
                 nbn_result.append([i, year, 1, 1])
             if year in yearList and month in monthList[1]:
                 nbn_result.append([i, year, 2, 1])
-            if year in yearList and month in monthList[2]:
-                nbn_result.append([i, year, 3, 1])
 
 def confusionMatrix(new_flickr, new_nbn):
     total = len(new_flickr)
@@ -237,7 +235,7 @@ def unique(dup_list):
 
 
 def main():
-    names = ['Blackbird', 'Blue Tit', 'Continental Robin', 'Woodpigeon', 'Dunnock', 'Great Tit', 'Chaffinch','House Sparrow', 'Collared Dove', 'Greenfinch']
+    names = ['Greenfinch']
     for common_name in names:
         verified_ids = getVerifiedFlickr(common_name)
 
@@ -257,7 +255,7 @@ def main():
         leftLon = -11.50
         rightLon = 2.00
 
-        cells = [5,10,15,20,25,30,35,40,45,50,55,60]
+        cells = [5]
 
         for c in cells:
             print "cell size: ", c
@@ -404,8 +402,7 @@ def main():
             print "flickr len: ", len(new_flickr)
             print "nbn len: ", len(new_nbn)
 
-            for f_pl in new_flickr:
-                print f_pl
+
 
             truePositive, trueNegative, falsePositive, falseNegative, total = confusionMatrix(new_flickr, new_nbn)
 

@@ -242,7 +242,7 @@ def confusionMatrix(new_flickr, new_nbn,columnNum):
 
 
 def main():
-    names = ['Blackbird', 'Blue Tit', 'Continental Robin', 'Woodpigeon', 'Dunnock', 'Great Tit', 'Chaffinch','House Sparrow', 'Collared Dove', 'Greenfinch']
+    names = ['Collared Dove', 'Greenfinch']
     for common_name in names:
         verified_ids = getVerifiedFlickr(common_name)
 
@@ -263,7 +263,7 @@ def main():
         rightLon = 2.00
 
 
-        cells = [5, 10, 15, 20,25,30, 35,40.45,50,55,60]
+        cells = [5, 10, 15, 20,25,30, 35,40,45,50,55,60]
 
         for c in cells:
             columnNum = numOfCells(c)

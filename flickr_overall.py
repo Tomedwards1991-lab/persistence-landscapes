@@ -187,14 +187,14 @@ def query_with_fetchmany():
 
     months_count = [m_01,m_02,m_03,m_04,m_05,m_06,m_07,m_08,m_09,m_10,m_11,m_12]
     print months_count
-    with open('flickr_months_count_all.csv', 'a') as f:
+    with open('flickr_months_count_all_1.csv', 'a') as f:
         f.write(str(months_count) + '\n')
-    '''
-    years_counts = [count_2004,count_2005,count_2006,count_2007,count_2008,count_2009,count_2010,count_2011,count_2012,count_2013,count_2014,count_2015,count_2016,count_2017,count_2018]
+
+    years_counts = [count_2004,count_2005,count_2006,count_2007,count_2008,count_2009,count_2010,count_2011,count_2012,count_2013,count_2014,count_2015,count_2016,count_2017]
     print years_counts
-    with open('flickr_years_count_all.csv', 'a') as f:
+    with open('flickr_years_count_all_1.csv', 'a') as f:
         f.write(str(years_counts) + '\n')
-    '''
+
 
 
 
