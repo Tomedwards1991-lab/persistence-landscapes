@@ -2,8 +2,12 @@ import io
 import urllib, json, time
 import os
 import mysql.connector
+import ssl
+import csv
 
-#######################§################
+
+
+#######################################
 ##########SET UP google session#######
 
 # Imports the Google Cloud client library
@@ -40,7 +44,7 @@ def finish(mydb,mycursor):
 def mainQuery(mydb,mycursor):
     result = []
 
-    sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
+    sql_getFnames2 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
                     "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
                     "WHERE n_top.common_name not in ('Adder','Blackbird','Blue Tit','Carrion Crow','Chaffinch','Coal Tit','Collared Dove','Common Carder Bee','Continental Robin'," \
                     "'Dunnock','Goldfinch','Great Spotted Woodpecker','Great Tit','Greenfinch','House Sparrow','Jackdaw','Long-Tailed Tit','Magpie','Song Thrush','Starling','Woodpigeon','Wren'," \
@@ -50,12 +54,25 @@ def mainQuery(mydb,mycursor):
                     "'Spinach','Olive Pearl','Herald','Bream Flat','Miller','Hop','Carrot','Blinks','Bleak','Streak','Honesty','Buzzard','Black Rustic','Broken-Barred Carpet','Buzzard','Carrion Crow','Collared Dove'," \
                     "'Common Bonnet','Common Carder Bee','Cow Parsely','Danish Scurvygrass','Early Bumble Bee','Fan-Foot','Hoary Willowherb','Irish Yew','July Highflyer','Large Red Damselfly','Magpie'," \
                     "'Minnow','Pearl Bordered Fritillary','Razorbill','Red Fescue','Sand Martin','Song Thrush','Stone-Curlew','Thale Cress','Tree Sparrow','White-Tailed Bumble Bee','Whitish Feather-moss'," \
-                    "'Cow Parsley','Field Maple','Otter','Barn Owl','Bee Orchid') " \
+                    "'Cow Parsley','Field Maple','Otter','Barn Owl','Bee Orchid','Bluebell') " \
                     "and n_top.uid = n_dict.uid; " \
 
     sql_getFnames1 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
                     "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
-                    "WHERE n_top.common_name = 'Barn Owl';" \
+                    "WHERE n_top.common_name = 'Barn Owl','Bluebell','Bracken','Dandelion';" \
+
+    sql_getFnames2 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
+                    "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
+                    "WHERE n_top.common_name in ('Gannet','Ivy','Mallard','Mantell Paun','Snipe','Bar-Headed Goose',);" \
+
+
+    sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
+    "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
+    "WHERE n_top.common_name in ('Mandarin Duck', 'Wood Duck', 'Egyptian Goose', " \
+                    "'Snow Goose', 'Barnacle Goose'," \
+                    " 'Eurasian Eagle Owl', 'Buddleia', 'Sika Deer', 'Golden Pheasant', " \
+                    "'Black Swan', 'Giant Hogweed', 'Grey squirrel', 'Rhododendron', " \
+                    "'Rabbit', 'Reeve''s muntjac','wild boar');" \
 
     mycursor.execute(sql_getFnames)
     flickr_names = mycursor.fetchall()
@@ -89,6 +106,17 @@ def iter_row(mycursor1, size=100):
             yield row
 
 def getFlickr(mydb1,mycursor1,result):
+    invalid_ids = []
+    with open('invalid_ids.csv') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        for row in csv_reader:
+            row_str = str(row[0])
+            id = row_str.split(".")[1]
+            invalid_ids.append(id)
+
+    invalid_ids_str = str(invalid_ids).replace("[","(").replace("]",")")
+    #print invalid_ids_str
+
     new_result = []
     for res in result:
         new_result.append(str(res))
@@ -97,9 +125,9 @@ def getFlickr(mydb1,mycursor1,result):
     result_str = str(new_result)
     result_str = result_str.replace("[","(").replace("]",")")
     #sql = "SELECT id, common_name FROM `flickr_data` where common_name = '" + common_name + "';"
-    sql = "SELECT id, common_name FROM `flickr_data` where common_name in " + result_str + ";"
+    sql = "SELECT id, common_name FROM `flickr_data` where common_name in " + result_str + " and id not in "+invalid_ids_str+";"
 
-    print "SQL GETTING NAMES: ",sql
+    #print "SQL GETTING NAMES: ",sql
     mycursor1.execute(sql)
     for x in iter_row(mycursor1, 100):
         speciesname = x[1]
@@ -111,11 +139,12 @@ def getFlickr(mydb1,mycursor1,result):
 
 
 def getPhotosAndLabels(flickr_data):
-    print "HELLO"
-    image_table = []
+
+
     google_table = []
     # Instantiates a client
     client = vision.ImageAnnotatorClient()
+    ssl._create_default_https_context = ssl._create_unverified_context
 
     for x in flickr_data:
         speciesname = x[0]
@@ -125,10 +154,9 @@ def getPhotosAndLabels(flickr_data):
 
         try:
 
-            time.sleep(1)
 
             file = "Flickr_Images/" + speciesname + "/" + str(photoid) + ".jpg"
-            print "file: ",file
+            #print "file: ",file
             if not os.path.exists(file):
                 url = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes" \
                     "&api_key=0097de9ab582dee0c8174ace8875e17d" \
@@ -136,37 +164,50 @@ def getPhotosAndLabels(flickr_data):
                     "&format=json" \
                     "&nojsoncallback=1" \
 
-                print "FLICKR URL:", url
+                #print "FLICKR URL:", url
                 response = urllib.urlopen(url)
                 data = json.loads(response.read())
-                print "the entire response from Flickr: ",data
+                #print "the entire response from Flickr: ",data
+
+                data_str = str(data)
+                if "u'message': u'Photo not found'" in data_str:
+                    print "----------PHOTO NOT FOUND-------------------"
+                    #print "data_str not found: ", data_str
+                    not_found = speciesname+"."+photoid
+                    #print "not_found: ",not_found
+                    newline = str(not_found)
+                    with open('invalid_ids.csv','a') as f:
+                        f.write(newline + '\n')
+                        newline = ""
+
+
                 directory = "Flickr_Images/" + speciesname
 
                 if not os.path.exists(directory):
                     os.makedirs(directory)
 
                 download = data["sizes"]["size"][-4]['source']
-                print "The image download from Flickr: ",download
-                print urllib.urlretrieve(download, directory + "/" + photoid + ".jpg")
-                print "Hi"
+                download.replace("https", "http")
+                #print "The image download from Flickr: ",download
+
+                urllib.urlretrieve(download, directory + "/" + photoid + ".jpg")
+                #print "Hi"
                 file_path = directory + "/" + photoid + ".jpg"
-                print "The file path to the image:", file_path
+                #print "The file path to the image:", file_path
 
 
                 # The name of the image file to annotate
                 file_name = os.path.join(os.path.dirname(__file__),file_path)
 
-                print "--------For the image table--------"
-                print "photoid: ", photoid
+                #print "--------For the image table--------"
+                #print "photoid: ", photoid
 
                 image_table_id = str(photoid)+"."+str(speciesname)
                 #print image_table_id
-                nothing = "nothing"
                 #image_table.append([str(image_table_id),"need update","need update",nothing,nothing])
                 mydb2, mycursor2 = dbConnection()
-                sql_image = 'INSERT IGNORE INTO image_names VALUES ("' + str(image_table_id)+'","need filling","nothing","nothing","nothing");'
                 mycursor2.execute('INSERT IGNORE INTO image_names VALUES ("' + str(image_table_id)+'","need filling","nothing","nothing","nothing");')
-                print sql_image
+                #print sql_image
                 #print "IMAGE INSERT FINISHED"
                 finish(mydb2, mycursor2)
                 # Loads the image into memory
@@ -179,61 +220,44 @@ def getPhotosAndLabels(flickr_data):
                 response = client.label_detection(image=image)
                 labels = response.label_annotations
 
-                print('Labels:')
+                #print('Labels:')
                 for label in labels:
                     label_description = str(label.description).lower()
                     label_description = label_description.replace("'", "''")
-                    print "-------------VALUES FOR Google-scores------------"
-                    print(photoid)
-                    print(label_description)
-                    print(label.score)
+                    #print "-------------VALUES FOR Google-scores------------"
+                    #print(photoid)
+                    #print(label_description)
+                    #print(label.score)
                     google_id = str(photoid)+"."+str(speciesname)
                     google_table.append([str(google_id),label_description,str(label.score)])
                     mydb3, mycursor3 = dbConnection()
                     sql_g = "INSERT INTO google_scores VALUES ('" + str(google_id) + "','" + label_description + "','" + str(label.score) + "');"
-                    mycursor3.execute("INSERT INTO google_scores VALUES ('" + str(google_id) + "','" + label_description + "','" + str(label.score) + "');")
-                    print sql_g
+                    mycursor3.execute(sql_g)
+                    #print sql_g
                     #print "GOOGLE INSERT FINISHED"
                     finish(mydb3, mycursor3)
+                    #print "after finish"
         except KeyError:
             continue
         except ValueError:
             continue
+        except IOError:
+            continue
 
-    #return image_table,google_table
-
-def imageTinsert(image_table,mycursor2):
-    mycursor2.execute("INSERT IGNORE INTO image_names VALUES ('?','?','?','?','?'),image_table;")
-    print "Image_insert success"
-
-def googleTinsert(google_table,mycursor3):
-    mycursor3.execute("INSERT INTO google_scores VALUES ('?','?','?'),google_table;")
-    print "Google insert success"
 
 def main():
     mydb, mycursor = dbConnection()
     result = mainQuery(mydb,mycursor)
-    print "result: ",result
-
     finish(mydb, mycursor)
 
+    #print "result: ", result
 
     mydb1, mycursor1 = dbConnection()
     flickr_data = getFlickr(mydb1, mycursor1, result)
     finish(mydb1, mycursor1)
 
-    #image_table, google_table = getPhotosAndLabels(flickr_data, uid, all_names_list)
     getPhotosAndLabels(flickr_data)
 
-    '''
-    mydb2, mycursor2 = dbConnection()
-    imageTinsert(image_table, mycursor2)
-    finish(mydb2, mycursor2)
-
-    mydb3, mycursor3 = dbConnection()
-    googleTinsert(google_table, mycursor3)
-    finish(mydb3, mycursor3)
-    '''
 
 
 

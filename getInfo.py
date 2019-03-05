@@ -4,7 +4,6 @@ import urllib2
 import csv
 import datetime
 import mysql.connector
-from unidecode import unidecode
 
 mydb = mysql.connector.connect(
     host="csmysql.cs.cf.ac.uk",
