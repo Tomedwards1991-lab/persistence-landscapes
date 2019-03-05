@@ -1,5 +1,7 @@
 import mysql.connector
 import csv
+import matplotlib.pyplot as plt; plt.rcdefaults()
+import numpy as np
 
 def getGoogleLabels(species_name):
     mydb = mysql.connector.connect(
@@ -53,7 +55,7 @@ def getGoogleLabels(species_name):
     mycursor.close()
     mydb.close()
 
-    with open('google_labels_Continental Robin.csv', 'w') as f_handle:
+    with open('google_labels_Greenfinch.csv', 'w') as f_handle:
         writer = csv.writer(f_handle)
         header = ['label', 'count']
         writer.writerow(header)
@@ -61,6 +63,7 @@ def getGoogleLabels(species_name):
             writer.writerow(row)
 
 def readCSV(fileName):
+    result = []
     with open(fileName) as csv_file:
         csv_reader = csv.reader(csv_file)
 
@@ -68,15 +71,31 @@ def readCSV(fileName):
         for row in csv_reader:
             if line_count == 0:
                 line_count += 1
-            if 0 < line_count <= 15:
+            elif 0 < line_count <= 15:
                 print row
                 line_count += 1
+                result.append([str(row[0]),str(row[1])])
 
-#def createChart(csv_file):
+    return result
+
+def createChart(result):
+    labels, ys = zip(*result)
+    y_pos = np.arange(len(labels))
+    plt.barh(y_pos, ys, align='center', alpha=0.5, color='blue')
+    plt.yticks(y_pos, labels)
+    plt.xlabel('Tag')
+    plt.title('Count')
+    plt.tight_layout()
+    plt.show()
+
+    #filename = 'figures_2stop/' + str(count) + '.png'
+    #plt.savefig(filename)
+    #plt.clf()
 
 def main():
-    #getGoogleLabels('Continental Robin')
-    readCSV('google_labels_Blackbird.csv')
+    getGoogleLabels('Continental Robin ')
+    #result = readCSV('google_labels_Blackbird.csv')
+    #createChart(result)
 
 
 if __name__ == '__main__':
