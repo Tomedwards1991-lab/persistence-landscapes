@@ -44,7 +44,7 @@ def finish(mydb,mycursor):
 def mainQuery(mydb,mycursor):
     result = []
 
-    sql_getFnames2 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
+    sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
                     "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
                     "WHERE n_top.common_name not in ('Adder','Blackbird','Blue Tit','Carrion Crow','Chaffinch','Coal Tit','Collared Dove','Common Carder Bee','Continental Robin'," \
                     "'Dunnock','Goldfinch','Great Spotted Woodpecker','Great Tit','Greenfinch','House Sparrow','Jackdaw','Long-Tailed Tit','Magpie','Song Thrush','Starling','Woodpigeon','Wren'," \
@@ -54,7 +54,11 @@ def mainQuery(mydb,mycursor):
                     "'Spinach','Olive Pearl','Herald','Bream Flat','Miller','Hop','Carrot','Blinks','Bleak','Streak','Honesty','Buzzard','Black Rustic','Broken-Barred Carpet','Buzzard','Carrion Crow','Collared Dove'," \
                     "'Common Bonnet','Common Carder Bee','Cow Parsely','Danish Scurvygrass','Early Bumble Bee','Fan-Foot','Hoary Willowherb','Irish Yew','July Highflyer','Large Red Damselfly','Magpie'," \
                     "'Minnow','Pearl Bordered Fritillary','Razorbill','Red Fescue','Sand Martin','Song Thrush','Stone-Curlew','Thale Cress','Tree Sparrow','White-Tailed Bumble Bee','Whitish Feather-moss'," \
-                    "'Cow Parsley','Field Maple','Otter','Barn Owl','Bee Orchid','Bluebell') " \
+                    "'Cow Parsley','Field Maple','Otter','Barn Owl','Bee Orchid','Bluebell''Mandarin Duck', 'Wood Duck', 'Egyptian Goose', " \
+                    "'Snow Goose', 'Barnacle Goose'," \
+                    " 'Eurasian Eagle Owl', 'Buddleia', 'Sika Deer', 'Golden Pheasant', " \
+                    "'Black Swan', 'Giant Hogweed', 'Grey squirrel', 'Rhododendron', " \
+                    "'Reeve''s muntjac','wild boar','Gannet','Ivy','Mallard','Mantell Paun','Snipe','Bar-Headed Goose','Rabbit','Barn Owl','Bluebell','Bracken','Dandelion') " \
                     "and n_top.uid = n_dict.uid; " \
 
     sql_getFnames1 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
@@ -63,16 +67,16 @@ def mainQuery(mydb,mycursor):
 
     sql_getFnames2 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
                     "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
-                    "WHERE n_top.common_name in ('Gannet','Ivy','Mallard','Mantell Paun','Snipe','Bar-Headed Goose',);" \
+                    "WHERE n_top.common_name in ('Gannet','Ivy','Mallard','Mantell Paun','Snipe','Bar-Headed Goose','Rabbit');" \
 
 
-    sql_getFnames = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
+    sql_getFnames3 = "SELECT n_top.uid,n_dict.names_list,n_top.common_name " \
     "FROM nbn_top1500 n_top,nbn_dictionary_list n_dict " \
     "WHERE n_top.common_name in ('Mandarin Duck', 'Wood Duck', 'Egyptian Goose', " \
                     "'Snow Goose', 'Barnacle Goose'," \
                     " 'Eurasian Eagle Owl', 'Buddleia', 'Sika Deer', 'Golden Pheasant', " \
                     "'Black Swan', 'Giant Hogweed', 'Grey squirrel', 'Rhododendron', " \
-                    "'Rabbit', 'Reeve''s muntjac','wild boar');" \
+                    "'Reeve''s muntjac','wild boar');" \
 
     mycursor.execute(sql_getFnames)
     flickr_names = mycursor.fetchall()
